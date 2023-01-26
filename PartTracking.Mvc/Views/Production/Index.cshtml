@@ -1,0 +1,255 @@
+﻿@model IEnumerable<PartTracking.Context.Models.DTO.CustomerWorkOrderView>
+
+@{
+    ViewData["Title"] = "Production - Index";
+}
+
+<style>
+    .header {
+        justify-content: center;
+        align-items: center;
+        border: 5px solid red;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        padding-left: 5px;
+        font-size: x-large;
+        text-align: center;
+    }
+
+    .tableData {
+        font-size: x-large;
+    }
+</style>
+
+<div class="row">
+    <div class="col-sm-3">
+    </div>
+    <div class="col-sm-6 header">
+        Production - Part Management
+    </div>
+    <div class="col-sm-3">
+    </div>
+</div>
+<p></p>
+
+<p></p>
+@if (TempData["EFResponse"] != null)
+{
+    <div class="container response">
+        <h3>@TempData["EFResponse"]</h3>
+    </div>
+}
+<p></p>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-1">
+        </div>
+        <div class="col-sm-6" style="font-size:x-large; font-display:block;">
+            <!-- search by workorder -->
+            <p>
+                @using (@Html.BeginForm("Index", "Production", FormMethod.Get))
+                {
+                    @Html.TextBox("SearchString")
+                    <input style="margin-top:-10px;" 
+                           type="submit" 
+                           class="btn btn-primary" 
+                           value="Search Work-Order" />
+                }
+            </p>
+            <hr />
+            <p></p>
+        </div>
+    </div>
+</div>
+
+@if (Model.Count() > 0)
+{
+    <p></p>
+    <table class="table" style="background-color:lightyellow;">
+        <thead>
+            <tr>
+                <th>
+                    Key#
+                </th>
+                <th>
+                    WorkOrder#
+                </th>
+                <th>
+                    Parts Required
+                </th>
+                <th>
+                    Balance[ZERO]
+                </th>
+                <th>
+                    Part#
+                </th>
+                <th>
+                    Parts Available
+                </th>
+                <th>
+                    Customer Order#
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                @if (item.BalanceAfterPull == 0)
+                {
+
+            <tr class="text-success">
+                <td>
+                    @Html.DisplayFor(modelItem => item.WOId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.WorkOrderId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PartQuantityRequired)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BalanceAfterPull)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PartName)
+                </td>
+                @if (item.PartQuantityAtWarehouse == null)
+                {
+                    <td>
+                        0
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PartQuantityAtWarehouse)
+                    </td>
+
+                }
+                <td>
+                    @Html.DisplayFor(modelItem => item.CustomerOrderId)
+                </td>
+                <td>
+                    @Html.ActionLink("Pull-Part", "PullPartFromWarehouse", new { id = item.WOId })
+                </td>
+            </tr>
+
+                }
+                else if (item.PartQuantityAtWarehouse == null || item.PartQuantityAtWarehouse == 0)
+                {
+
+        <tr class="text-danger">
+            <td>
+                @Html.DisplayFor(modelItem => item.WOId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WorkOrderId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PartQuantityRequired)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BalanceAfterPull)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PartName)
+            </td>
+            @if (item.PartQuantityAtWarehouse == null)
+            {
+                <td>
+                    0
+                </td>
+            }
+            else
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.PartQuantityAtWarehouse)
+                </td>
+
+            }
+            <td>
+                @Html.DisplayFor(modelItem => item.CustomerOrderId)
+            </td>
+            <td>
+                @Html.ActionLink("Pull-Part", "PullPartFromWarehouse", new { id = item.WOId })
+            </td>
+        </tr>
+
+                }
+                else
+                {
+
+        <tr class="text-primary">
+            <td>
+                @Html.DisplayFor(modelItem => item.WOId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WorkOrderId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PartQuantityRequired)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BalanceAfterPull)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PartName)
+            </td>
+            @if (item.PartQuantityAtWarehouse == null)
+            {
+                <td>
+                    0
+                </td>
+            }
+            else
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.PartQuantityAtWarehouse)
+                </td>
+
+            }
+            <td>
+                @Html.DisplayFor(modelItem => item.CustomerOrderId)
+            </td>
+            <td>
+                @Html.ActionLink("Pull-Part", "PullPartFromWarehouse", new { id = item.WOId })
+            </td>
+        </tr>
+
+                }
+            }
+        </tbody>
+    </table>
+
+}
+else
+{
+    <p></p>
+    <div class="container" style="color:red; font-size:xx-large;">
+        Work-Order NOT Found!
+    </div>
+    <p></p>
+}
+
+
+
+@section Scripts {
+
+    <script type="text/javascript">
+
+        // disappear after 3 seconds,,,
+        setTimeout(function () { $('.response').fadeOut(); }, 3000);
+
+        function DisableBackButton() {
+            window.history.forward()
+        }
+        DisableBackButton();
+        window.onload = DisableBackButton;
+        window.onpageshow = function (evt) { if (evt.persisted) DisableBackButton() }
+        window.onunload = function () { void (0) }
+
+    </script>
+
+}

@@ -1,0 +1,11 @@
+﻿Scaffold-DbContext "Server=CHICAAMBICA\SQLExpress;Database=PartMgt;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models
+
+Scaffold-DbContext "Server=CHICAAMBICA\SQLExpress;Database=PartMgt;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Force
+
+
+git>
+C:\Users\ankit_2\source\repos
+git push -u origin master
+git commit -m "toDo1-wip1"
+git add .
+git init

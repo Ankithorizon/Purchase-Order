@@ -1,0 +1,107 @@
+﻿@model PartTracking.Context.Models.DTO.OrderTrackingData
+
+
+
+<style>
+    .dataImp {
+        color: red;
+        font-size: x-large;
+    }
+
+    .data {
+        color: blue;
+        font-size: large;
+    }
+
+    .label {
+        font-size: large;
+    }
+
+    .labelImp {
+        font-size: x-large;
+    }
+</style>
+
+
+<p></p>
+@if (TempData["Exception"] != null)
+{
+    <div class="container response">
+        <h3>Error : @TempData["Exception"]</h3>
+    </div>
+}
+<p></p>
+
+<div>
+    <dl class="row">
+        <dt class="col-sm-3 label">
+            Selected Order #
+        </dt>
+        <dd class="col-sm-8 data">
+            @Html.DisplayFor(model => model.OrderMasterId)
+        </dd>
+        <dt class="col-sm-3 labelImp">
+            Order QTY
+        </dt>
+        <dd class="col-sm-8 dataImp">
+            @Html.DisplayFor(model => model.OrderQuantity)
+        </dd>
+        <dt class="col-sm-3 labelImp">
+            Received QTY
+        </dt>
+        <dd class="col-sm-8 dataImp">
+            @Html.DisplayFor(model => model.ReceivedQuantity)
+        </dd>
+    </dl>
+
+
+    <div>
+        <!-- part - order - receiving data -->
+        <div>
+            <h4>Receiving - Data</h4>
+            <hr />
+            @if (Model.ReceivingData.Count() > 0)
+            {
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Receiving #
+                            </th>
+                            <th>
+                                Receive QTY
+                            </th>
+                            <th>
+                                Receive Date
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.ReceivingData)
+                        {
+                            <tr>
+                                <td>
+                                    @item.ReceivePartId
+                                </td>
+                                <td>
+                                    @item.ReceiveQuantity / @Model.OrderQuantity
+                                </td>
+                                <td>
+                                    @item.ReceiveDate.ToString("dd MMM yyyy")
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p></p>
+                <div class="container" style="color:red; font-size:xx-large;">
+                    Receiving Data NOT Found!
+                </div>
+                <p></p>
+            }
+        </div>
+    </div>
+</div>

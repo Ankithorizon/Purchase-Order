@@ -1,0 +1,163 @@
+﻿@{
+    ViewData["Title"] = "Tracking - Index";
+}
+
+<style>
+    .header {
+        justify-content: center;
+        align-items: center;
+        border: 5px solid red;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        padding-left: 5px;
+        font-size: x-large;
+        text-align: center;
+    }
+
+    .response {
+        color: red;
+    }
+</style>
+
+<div class="row">
+    <div class="col-sm-3">
+    </div>
+    <div class="col-sm-6 header">
+        Tracking - Part Management
+    </div>
+    <div class="col-sm-3">
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-md-6">
+        <form>
+            <div class="form-group">
+                <label class="control-label">Select Part #</label>
+                <select id="PartMasterId" name="PartMasterId" class="form-control"
+                        asp-items="(IEnumerable<SelectListItem>)ViewBag.Parts">
+                    <option value="">Pick Part</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Year #</label>
+                <select id="Year" name="Year" class="form-control"
+                        asp-items="(IEnumerable<SelectListItem>)ViewBag.Years">
+                    <option value="">Pick Year</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Month #</label>
+                <select id="Month" name="Month" class="form-control"
+                        asp-items="(IEnumerable<SelectListItem>)ViewBag.Months">
+                    <option value="">Pick Month</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <a class="btn btn-primary orderDetails"
+                   href="javascript:void(0)">Track Warehouse Orders!</a> |
+                <a class="btn btn-primary workOrderDetails"
+                   href="javascript:void(0)">Track Work Orders!</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- part-orders partial view -->
+<div id="partOrders">
+</div>
+
+<!-- part-workorders partial view -->
+<div id="partWorkOrders">
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript">
+        $(function () {
+            // orderDetails 
+            $(".orderDetails").click(function () {
+
+                // hide workOrderDetails
+                $('#partWorkOrders').fadeOut();
+                $('#partOrders').show();
+
+                var Id = $("#PartMasterId option:selected").val();
+                if (Id == '') {
+                    $('#partOrders').html('');
+                    return;
+                }
+
+                var year = $("#Year option:selected").val();
+                var month = $("#Month option:selected").val();
+
+                $.ajax({
+                    type: "Get", //Method type
+                    url: "/Tracking/GetWarehouseOrdersByPart?Id=" + Id + "&Year=" + year + "&Month=" + month,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "html",
+                    success: function (response) {
+                        console.log(response);
+                        $('#partOrders').html(response);
+                    },
+                    failure: function (response) {
+                        console.log('Error...');
+                    },
+                    error: function (response) {
+                        console.log('Error...');
+                    }
+                });
+            });
+
+
+            // workOrderDetails
+            $(".workOrderDetails").click(function () {
+
+                // hide orderDetails
+                $('#partOrders').fadeOut();
+                $('#partWorkOrders').show();
+
+                var Id = $("#PartMasterId option:selected").val();
+                if (Id == '') {
+                    $('#partOrders').html('');
+                    return;
+                }
+
+                $.ajax({
+                    type: "Get", //Method type
+                    url: "/Tracking/GetWOData?Id=" + Id,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "html",
+                    success: function (response) {
+                        console.log(response);
+                        $('#partWorkOrders').html(response);
+                    },
+                    failure: function (response) {
+                        console.log('Error...');
+                    },
+                    error: function (response) {
+                        console.log('Error...');
+                    }
+                });
+            });
+
+        });
+
+
+
+
+
+
+        // after Part add, browser back history doesn't work,,,
+        // this will prevent form resubmission,,,
+        function DisableBackButton() {
+            window.history.forward()
+        }
+        DisableBackButton();
+        window.onload = DisableBackButton;
+        window.onpageshow = function (evt) { if (evt.persisted) DisableBackButton() }
+        window.onunload = function () { void (0) }
+    </script>
+}

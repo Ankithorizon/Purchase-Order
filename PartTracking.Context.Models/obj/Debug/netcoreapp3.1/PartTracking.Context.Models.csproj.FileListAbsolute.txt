@@ -1,0 +1,13 @@
+C:\Users\ankit_2\source\repos\PartTracking\PartTracking.Context.Models\obj\Debug\netcoreapp3.1\PartTracking.Context.Models.AssemblyInfoInputs.cache
+C:\Users\ankit_2\source\repos\PartTracking\PartTracking.Context.Models\obj\Debug\netcoreapp3.1\PartTracking.Context.Models.AssemblyInfo.cs
+C:\Users\ankit_2\source\repos\PartTracking\PartTracking.Context.Models\obj\Debug\netcoreapp3.1\PartTracking.Context.Models.csproj.CoreCompileInputs.cache
+C:\Users\ankit_2\source\repos\PartTracking\PartTracking.Context.Models\bin\Debug\netcoreapp3.1\PartTracking.Context.Models.deps.json
+C:\Users\ankit_2\source\repos\PartTracking\PartTracking.Context.Models\bin\Debug\netcoreapp3.1\PartTracking.Context.Models.runtimeconfig.json
+C:\Users\ankit_2\source\repos\PartTracking\PartTracking.Context.Models\bin\Debug\netcoreapp3.1\PartTracking.Context.Models.runtimeconfig.dev.json
+C:\Users\ankit_2\source\repos\PartTracking\PartTracking.Context.Models\bin\Debug\netcoreapp3.1\PartTracking.Context.Models.dll
+C:\Users\ankit_2\source\repos\PartTracking\PartTracking.Context.Models\bin\Debug\netcoreapp3.1\PartTracking.Context.Models.pdb
+C:\Users\ankit_2\source\repos\PartTracking\PartTracking.Context.Models\obj\Debug\netcoreapp3.1\PartTracking.Context.Models.dll
+C:\Users\ankit_2\source\repos\PartTracking\PartTracking.Context.Models\obj\Debug\netcoreapp3.1\PartTracking.Context.Models.pdb
+C:\Users\ankit_2\source\repos\PartTracking\PartTracking.Context.Models\obj\Debug\netcoreapp3.1\PartTracking.Context.Models.genruntimeconfig.cache
+C:\Users\ankit_2\source\repos\PartTracking\PartTracking.Context.Models\obj\Debug\netcoreapp3.1\PartTracking.Context.Models.csproj.AssemblyReference.cache
+C:\Users\ankit_2\source\repos\PartTracking\PartTracking.Context.Models\obj\Debug\netcoreapp3.1\PartTracking.Context.Models.GeneratedMSBuildEditorConfig.editorconfig

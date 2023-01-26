@@ -1,0 +1,107 @@
+﻿@model PartTracking.Context.Models.DTO.WOTrackingData
+
+
+<style>
+    .dataImp {
+        color: red;
+        font-size: x-large;
+    }
+
+    .data {
+        color: blue;
+        font-size: large;
+    }
+
+    .label {
+        font-size: large;
+    }
+
+    .labelImp {
+        font-size: x-large;
+    }
+</style>
+
+
+<p></p>
+@if (TempData["Exception"] != null)
+{
+    <div class="container response">
+        <h3>Error : @TempData["Exception"]</h3>
+    </div>
+}
+<p></p>
+
+<div>
+    <dl class="row">
+        <dt class="col-sm-3 label">
+            Selected WorkOrder #
+        </dt>
+        <dd class="col-sm-8 data">
+            @Html.DisplayFor(model => model.WorkOrderId)
+        </dd>
+        <dt class="col-sm-3 labelImp">
+            WO QTY
+        </dt>
+        <dd class="col-sm-8 dataImp">
+            @Html.DisplayFor(model => model.WorkOrderQuantity)
+        </dd>
+        <dt class="col-sm-3 labelImp">
+            Pulled QTY
+        </dt>
+        <dd class="col-sm-8 dataImp">
+            @Html.DisplayFor(model => model.PulledQuantity)
+        </dd>
+    </dl>
+
+
+    <div>
+        <!-- part - pulling data -->
+        <div>
+            <h4>Pulling - Data</h4>
+            <hr />
+            @if (Model.PullingData.Count() > 0)
+            {
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Pulling #
+                            </th>
+                            <th>
+                                Pulling QTY
+                            </th>
+                            <th>
+                                Pulling Date
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.PullingData)
+                        {
+                            <tr>
+                                <td>
+                                    @item.PartWorkOrderId
+                                </td>
+                                <td>
+                                    @item.PullingQuantity / @Model.WorkOrderQuantity
+                                </td>
+                                <td>
+                                    @item.PullingDate.ToString("dd MMM yyyy")
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p></p>
+                <div class="container" style="color:red; font-size:xx-large;">
+                    Pulling Data NOT Found!
+                </div>
+                <p></p>
+            }
+        </div>
+    </div>
+</div>
+

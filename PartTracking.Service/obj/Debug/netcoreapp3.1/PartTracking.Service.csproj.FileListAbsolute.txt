@@ -1,0 +1,16 @@
+C:\Users\ankit_2\source\repos\PartTracking\PartTracking.Service\obj\Debug\netcoreapp3.1\PartTracking.Service.csproj.AssemblyReference.cache
+C:\Users\ankit_2\source\repos\PartTracking\PartTracking.Service\obj\Debug\netcoreapp3.1\PartTracking.Service.AssemblyInfoInputs.cache
+C:\Users\ankit_2\source\repos\PartTracking\PartTracking.Service\obj\Debug\netcoreapp3.1\PartTracking.Service.AssemblyInfo.cs
+C:\Users\ankit_2\source\repos\PartTracking\PartTracking.Service\obj\Debug\netcoreapp3.1\PartTracking.Service.csproj.CoreCompileInputs.cache
+C:\Users\ankit_2\source\repos\PartTracking\PartTracking.Service\bin\Debug\netcoreapp3.1\PartTracking.Service.deps.json
+C:\Users\ankit_2\source\repos\PartTracking\PartTracking.Service\bin\Debug\netcoreapp3.1\PartTracking.Service.runtimeconfig.json
+C:\Users\ankit_2\source\repos\PartTracking\PartTracking.Service\bin\Debug\netcoreapp3.1\PartTracking.Service.runtimeconfig.dev.json
+C:\Users\ankit_2\source\repos\PartTracking\PartTracking.Service\bin\Debug\netcoreapp3.1\PartTracking.Service.dll
+C:\Users\ankit_2\source\repos\PartTracking\PartTracking.Service\bin\Debug\netcoreapp3.1\PartTracking.Service.pdb
+C:\Users\ankit_2\source\repos\PartTracking\PartTracking.Service\bin\Debug\netcoreapp3.1\PartTracking.Context.Models.dll
+C:\Users\ankit_2\source\repos\PartTracking\PartTracking.Service\bin\Debug\netcoreapp3.1\PartTracking.Context.Models.pdb
+C:\Users\ankit_2\source\repos\PartTracking\PartTracking.Service\obj\Debug\netcoreapp3.1\PartTracking.Service.csproj.CopyComplete
+C:\Users\ankit_2\source\repos\PartTracking\PartTracking.Service\obj\Debug\netcoreapp3.1\PartTracking.Service.dll
+C:\Users\ankit_2\source\repos\PartTracking\PartTracking.Service\obj\Debug\netcoreapp3.1\PartTracking.Service.pdb
+C:\Users\ankit_2\source\repos\PartTracking\PartTracking.Service\obj\Debug\netcoreapp3.1\PartTracking.Service.genruntimeconfig.cache
+C:\Users\ankit_2\source\repos\PartTracking\PartTracking.Service\obj\Debug\netcoreapp3.1\PartTracking.Service.GeneratedMSBuildEditorConfig.editorconfig

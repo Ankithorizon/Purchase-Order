@@ -1,0 +1,614 @@
+out keyword
+out keyword is used to pass arguments to method as a reference type and is primary used when a method has to return multiple values. ref keyword is also used to pass arguments to method as reference type and is used when existing variable is to be modified in a method. Following is the valid usage of ref and out keywords in C#.
+
+Example
+using System.IO;
+using System;
+public class Program {
+   public static void update(out int a){
+      a = 10;
+   }
+   public static void change(ref int d){
+      d = 11;
+   }
+   public static void Main() {
+      int b;
+      int c = 9;
+      Program p1 = new Program();
+      update(out b);
+      change(ref c);
+      Console.WriteLine("Updated value is: {0}", b);
+      Console.WriteLine("Changed value is: {0}", c);
+   }
+}
+Output
+Updated value is: 10
+Changed value is: 11
+
+-------------------------------------------------------------------
+
+C#
+
+namespace ExtensionMethods
+{
+    public static class MyExtensions
+    {
+        public static int WordCount(this String str)
+        {
+            return str.Split(new char[] { ' ', '.', '?' },
+                             StringSplitOptions.RemoveEmptyEntries).Length;
+        }
+    }
+}
+The WordCount extension method can be brought into scope with this using directive:
+
+using ExtensionMethods;
+And it can be called from an application by using this syntax:
+
+string s = "Hello Extension Methods";
+int i = s.WordCount();
+
+-------------------------------------------------------------
+
+
+Simple Generic Class Example
+ 
+The following example shows a simple Generic type manipulation. The TestClass<T> defines an array of generic type with length 5. The Add() method is responsible for adding any type of objects into the collection and the Indexer property is an implementation of foreach statement iteration. Finally in the main class we instantiated the TestClass<T> class with an Integer type reference and adds some integer type elements into the collection using the Add() method.
+using System;  
+using System.Collections.Generic;  
+  
+namespace GenericApp  
+{  
+    public class TestClass<T>  
+    {  
+        // define an Array of Generic type with length 5  
+        T[] obj = new T[5];  
+        int count = 0;  
+  
+        // adding items mechanism into generic type  
+        public void  Add(T item)  
+        {  
+            //checking length  
+            if (count + 1 < 6)  
+            {  
+                obj[count] = item;  
+  
+            }  
+            count++;  
+        }  
+        //indexer for foreach statement iteration  
+        public T this[int index]  
+        {  
+            get { return obj[index]; }  
+            set { obj[index] = value; }  
+        }   
+    }  
+    class Program  
+    {  
+        static void Main(string[] args)  
+        {  
+            //instantiate generic with Integer  
+            TestClass<int> intObj = new TestClass<int>();  
+  
+            //adding integer values into collection  
+            intObj.Add(1);  
+            intObj.Add(2);  
+            intObj.Add(3);     //No boxing  
+            intObj.Add(4);   
+            intObj.Add(5);  
+  
+            //displaying values  
+            for (int i = 0; i < 5; i++)  
+            {  
+                Console.WriteLine(intObj[i]);   //No unboxing  
+            }  
+            Console.ReadKey();    
+        }  
+    }  
+}  
+After building and running this program, the output of the program is as shown in the following;
+  
+There are some significant characteristics of Generic types that make them special to the conventional non-generics type as follows;
+Type Safety
+Performance
+Binary Code reuse
+Type Safety
+ 
+One of the most significant features of Generics is Type Safety. In the case of the non-generic ArrayList class, if objects are used, any type can be added to the collections that can sometimes result in a great disaster. The following example shows adding an integer, string and object to the collection of an ArrayList type;
+ArrayList obj = new ArrayList();  
+obj.Add(50);  
+obj.Add("Dog");  
+obj.Add(new TestClass());  
+Now, if the collection is iterated through the foreach statement using integer elements, the compiler accepts the code but because all the elements in the collection are not an integer, a runtime exception occurs; 
+foreach(int i in obj)  
+{  
+    Console.WriteLine(i);    
+}  
+The rule of thumb in programming is that Errors should be detected as early as possible. With the generic class Test<T>, the generic type T defines what types are allowed. With the definition of Test<int>, only an integer type can be added to the collection. The compiler doesn't compile the code because the Add() method has invalid arguments as follows; 
+Test<int> obj = new Test<int>();  
+obj.Add(50);  
+obj.Add("Dog");            //compiler error  
+obj.Add(new TestClass());  //compiler error  
+Performance
+ 
+Another feature of Generics is performance. Using value types with non-generic collection classes result in boxing and unboxing overhead when a value type is converted to reference type and vice-versa.
+ 
+In the following example, the ArrayList class stores objects and the Add() method is defined to store some integer type argument. So an integer type is boxed. When the value from ArrayList is read using the foreach statement, unboxing occurrs. 
+ArrayList  obj = new ArrayList();   
+obj.Add(50);    //boxing- convert value type to reference type  
+int x= (int)obj[0]; //unboxing  
+foreach(int i in obj)  
+{  
+   Console.WriteLine(i);   // unboxing  
+}  
+Note
+Generics are faster than other collections such as ArrayList.
+ 
+Instead of using objects, a Generics type of the TestClass<T> class is defined as an int, so an int type is used inside the class that is generated dynamically from the compiler. Therefore boxing and unboxing no longer occurs as in the following; 
+TestClass<int> obj = new TestClass<int>();  
+obj.Add(50);    //No boxing  
+int x= obj[0]; // No unboxing  
+foreach(int i in obj)  
+{  
+   Console.WriteLine(i);   //No unboxing  
+}  
+
+------------------------------------------------------
+
+Array
+Arrays are strongly-typed collections of the same data type and have a fixed length that cannot be changed during runtime. We can access the Array elements by numeric index. The array indexes start at zero. The default value of numeric array elements is set to zero, and the reference elements are set to null.
+
+ArrayList
+An Array list is not a strongly-typed collection. It can store the values of different data types or same datatype. The size of an array list increases or decreases dynamically so it can take any size of values from any data type. ArrayList is one of the most flexible data structures from C# Collections. ArrayList contains a simple list of values. ArrayList implements the IList interface using an array and very easily we can add, insert, delete, view etc. It is very flexible because we can add without any size information that is it will grow dynamically and also shrink.
+
+
+--------------------------------------------
+
+namespace MultipleInheritApplication    
+{    
+    interface calc1    
+    {    
+        int add(int a, int b);    
+    }    
+    interface calc2    
+    {    
+        int sub(int x, int y);    
+    }    
+    interface calc3    
+    {    
+        int mul(int r, int s);    
+    }    
+    interface calc4    
+    {    
+        int div(int c, int d);    
+    }    
+    class Calculation : calc1, calc2, calc3, calc4    
+    {    
+        public int result1;    
+        public int add(int a, int b)    
+        {    
+            return result1 = a + b;    
+        }    
+        public int result2;    
+        public int sub(int x, int y)    
+        {    
+            return result2 = x - y;    
+        }    
+        public int result3;    
+        public int mul(int r, int s)    
+        {    
+            return result3 = r * s;    
+        }    
+        public int result4;    
+        public int div(int c, int d)    
+        {    
+            return result4 = c / d;    
+        }    
+     
+        class Program    
+        {    
+            static void Main(string[] args)    
+            {    
+                Calculation c = new Calculation();    
+                c.add(8, 2);    
+                c.sub(20, 10);    
+                c.mul(5, 2);    
+                c.div(20, 10);    
+                Console.WriteLine("Multiple Inheritance concept Using Interfaces :\n ");    
+                Console.WriteLine("Addition: " + c.result1);    
+                Console.WriteLine("Substraction: " + c.result2);    
+                Console.WriteLine("Multiplication :" + c.result3);    
+                Console.WriteLine("Division: " + c.result4);    
+                Console.ReadKey();    
+            }    
+        }    
+    }    
+} 
+
+--------------------------
+
+// C# program to illustrate
+// multiple class inheritance
+using System;
+using System.Collections;
+
+// Parent class 1
+class Scaler {
+
+  // Providing the implementation
+  // of features() method
+  public void features()
+  {
+
+      // Creating ArrayList
+      ArrayList My_features= new ArrayList();
+
+      // Adding elements in the
+      // My_features ArrayList
+      My_features.Add("Abstraction");
+      My_features.Add("Encapsulation");
+      My_features.Add("Inheritance");
+
+      Console.WriteLine("Features provided by OOPS:");
+      foreach(var elements in My_features)
+      {
+          Console.WriteLine(elements);
+      }
+  }
+}
+
+// Parent class 2
+class Scaler2 :Scaler{
+
+  // Providing the implementation
+  // of courses() method
+  public void languages()
+  {
+
+      // Creating ArrayList
+      ArrayList My_features = new ArrayList();
+
+      // Adding elements in the
+      // My_features ArrayList
+      My_features.Add("C++");
+      My_features.Add("C#");
+      My_features.Add("JScript");
+     
+
+      Console.WriteLine("\nLanguages that use OOPS concepts:");
+      foreach(var elements in My_features)
+      {
+          Console.WriteLine(elements);
+      }
+  }
+}
+
+// Child class
+class ScalertoScaler : Scaler2 {
+}
+
+public class Scaler1 {
+
+  // Main method
+  static public void Main()
+  {
+
+      // Creating object of ScalertoScaler class
+      ScalertoScaler obj = new ScalertoScaler();
+      obj.features();
+      obj.languages();
+  }
+}
+
+------------------------------
+
+What is the difference between an abstract class and an interface?
+Let’s dig into the differences between an abstract class and an interface:
+
+Abstract classes are classes that cannot be instantiated ie. that cannot create an object. The interface is like an abstract class because all the methods inside the interface are abstract methods.
+Surprisingly, abstract classes can have both abstract and non-abstract methods but all the methods of an interface are abstract methods.
+Since abstract classes can have both abstract and non-abstract methods, we need to use the Abstract keyword to declare abstract methods. But in the interface, there is no such need.
+An abstract class has constructors while an interface encompasses none. 
+
+---------------------
+
+Managed code lets you run the code on a managed CLR runtime environment in the .NET framework. 
+Managed code runs on the managed runtime environment than the operating system itself. 
+Benefits: Provides various services like a garbage collector, exception handling, etc. 
+
+Unmanaged code is when the code doesn’t run on CLR, it is an unmanaged code that works outside the .NET framework. 
+They don’t provide services of the high-level languages and therefore, run without them. Such an example is C++. 
+
+------------------------------
+
+What are the types of classes in C#?
+Class is an entity that encapsulates all the properties of its objects and instances as a single unit. C# has four types of such classes:
+
+Static class: Static class, defined by the keyword ‘static’ does not allow inheritance. Therefore, you cannot create an object for a static class.
+Sample code:
+
+static class classname  
+{  
+  //static data members  
+  //static methods  
+}
+Partial class: Partial class, defined by the keyword ‘partial’ allows its members to partially divide or share source (.cs) files.
+Abstract class: Abstract classes are classes that cannot be instantiated where you cannot create objects. Abstract classes work on the OOPS concept of abstraction. Abstraction helps to extract essential details and hide the unessential ones.
+Sealed class: Sealed classes are classes that cannot be inherited. Use the keyword sealed to restrict access to users to inherit that class. 
+
+-------------------------------------
+
+What is garbage collection in C#?
+Garbage collection is the process of freeing up memory that is captured by unwanted objects. When you create a class object, automatically some memory space is allocated to the object in the heap memory. Now, after you perform all the actions on the object, the memory space occupied by the object becomes waste. It is necessary to free up memory. Garbage collection happens in three cases:
+
+If the occupied memory by the objects exceeds the pre-set threshold value.
+If the garbage collection method is called
+If your system has low physical memory
+
+----------------------------------
+
+What is Common Language Runtime (CLR)?
+CLR handles program execution for various languages including C#. The architecture of CLR handles memory management, garbage collection, security handling
+
+-----------------------
+
+
+How is C# different from C?
+You would always know C being the procedural language while C# is a more object-oriented language. The biggest difference is that C# supports automatic garbage collection by Common Language Runtime (CLR) while C does not. C# primarily needs a .NET framework to execute while C is a platform-agnostic language. 
+
+----------------------------------------------
+
+Boxing: Boxing converts value type (int, char, etc.) to reference type (object) which is an implicit conversion process using object value. 
+
+Example:
+
+int num = 23; // 23 will assigned to num
+Object Obj = num; // Boxing
+Unboxing: Unboxing converts reference type (object) to value type (int, char, etc.) using an explicit conversion process. 
+
+Example:
+
+int num = 23;         // value type is int and assigned value 23
+Object Obj = num;    // Boxing
+int i = (int)Obj;    // Unboxing
+
+------------------------------
+
+What are Properties in C#?
+Properties in C# are public members of a class where they provide the ability to access private members of a class. The basic principle of encapsulation lets you hide some sensitive properties from the users by making the variables private. The private members are not accessible otherwise in a class. Therefore, by using properties in C# you can easily access the private members and set their values. 
+
+The values can be easily assigned using get and set methods, also known as accessors. While the get method extracts the value, the set method assigns the value to the variables. 
+
+---------------------
+
+What are partial classes in C#?
+Partial classes implement the functionality of a single class into multiple files. These multiple files are combined into one during compile time. The partial class can be created using the partial keyword. 
+
+public partial Clas_name  
+{
+       // code
+}
+-----------------
+
+difference between late binding and early binding in C#?
+Late binding and early binding are examples of one of the primary concepts of OOPS: Polymorphism. 
+
+For ex: one function calculateBill() will calculate bills of premium customers, basic customers, and semi-premium customers based on their policies differently. The calculation for all the customer objects is done differently using the same function which is called polymorphism. 
+
+When an object is assigned to an object variable in C#, the .NET framework performs the binding. 
+
+When the binding function happens at compile-time, it is called early binding. It investigates and checks the methods and properties of the static objects. With early binding, the number of run-time errors decreases substantially and it executes pretty quickly. 
+
+But when the binding happens at runtime, it is called late binding. Late binding happens when the objects are dynamic (decided based on the data they hold) at run-time. It is slower as it looks through during run-time.
+---------------
+
+
+arrays in C#:
+
+The memory allocation is DYNAMIC.
+Arrays in C# are treated as objects.
+The length of the array is easy to find by detecting the number of members in the array.
+The members in the array are ordered and begin with the index value=0.
+The array types are reference types derived from the base array type.
+
+------------------------
+Indexers
+
+Indexers allow instances of a class or struct to be indexed just like arrays. The indexed value can be set or retrieved without explicitly specifying a type or instance member. Indexers resemble properties except that their accessors take parameters.
+
+The following example defines a generic class with simple get and set accessor methods to assign and retrieve values. The Program class creates an instance of this class for storing strings.
+
+C#
+
+Copy
+using System;
+
+class SampleCollection<T>
+{
+   // Declare an array to store the data elements.
+   private T[] arr = new T[100];
+
+   // Define the indexer to allow client code to use [] notation.
+   public T this[int i]
+   {
+      get { return arr[i]; }
+      set { arr[i] = value; }
+   }
+}
+
+class Program
+{
+   static void Main()
+   {
+      var stringCollection = new SampleCollection<string>();
+      stringCollection[0] = "Hello, World";
+      Console.WriteLine(stringCollection[0]);
+   }
+}
+// The example displays the following output:
+//  
+
+------------------------------------------
+
+Equality operator (==) is a reference type which means that if equality operator is used, it will return true only if both the references point to the same object.  
+
+Equals() method: Equals method is used to compare the values carried by the objects. int x=10, int y=10. If x==y is compared then, the values carried by x and y are compared which is equal and therefore they return true. 
+
+Equality operator: Compares by reference
+
+Equals(): Compares by value 
+
+-----------------
+
+
+overload methods in C#, 
+
+Change the number of parameters in a method, or
+Change the order of parameters in a method, or
+Use different data types for parameters
+In these ways, you can overload a method multiple times.
+For ex.
+
+public class Area {
+   public double area(double x) {
+       double area = x * x;
+       return area;
+   }
+   public double area(double a, double b) {
+       double area = a * b;
+       return area;
+   }
+}
+
+-------------------------
+
+Reflection in C#?
+Reflection in C# extracts metadata from the datatypes during runtime. 
+
+To add reflection in the .NET framework, simply use System.Refelction namespace in your program to retrieve the type which can be anything from:
+
+Assembly
+Module
+Enum
+MethodInfo
+ConstructorInfo
+MemberInfo
+ParameterInfo
+Type
+FieldInfo
+EventInfo
+PropertyInfo
+
+---------------------------
+readonly keyword is used to create a readonly fields.	
+const keyword is used to create constant fields.
+
+readonly is a constant defined at runtime.	
+const is used to create a constant at compile time.
+
+readonly field value can be changed after declaration.	
+const field value cannot be changed after declaration.
+
+readonly fields cannot be defined within a method.	
+const fields can be declared within a method.
+
+readonly variables are declared as instance variable and assigned values in constructor.	
+const fields are to be assigned at the time of declaration.
+
+---------------------------------
+
+
+difference between String and StringBuilder in C#?
+The major difference between String and StringBuilder is that String objects are immutable while StringBuilder creates a mutable string of characters. StringBuilder will make the changes to the existing object rather than creating a new object.
+
+StringBuilder simplifies the entire process of making changes to the existing string object. Since the String class is immutable, it is costlier to create a new object every time we need to make a change. So, the StringBuilder class comes into picture which can be evoked using the System.Text namespace.
+
+In case, a string object will not change throughout the entire program, then use String class or else StringBuilder. 
+
+--------------------------
+
+
+to reverse a string?
+internal static void ReverseString(string str) 
+{ 
+   
+  char[] charArray = str.ToCharArray(); 
+  for (int i = 0, j = str.Length - 1; i < j; i++, j--) 
+  { 
+      charArray[i] = str[j]; 
+      charArray[j] = str[i]; 
+  } 
+  string reversedstring = new string(charArray); 
+  Console.WriteLine(reversedstring); 
+
+--------------
+
+find if a given string is palindrome or not?
+internal static void chkPalindrome(string str) 
+{ 
+   bool flag = false; 
+   for (int i = 0, j = str.Length - 1; i < str.Length / 2; i++, j--) 
+   { 
+       if (str[i] != str[j]) 
+       { 
+           flag = false; 
+           break; 
+       } 
+       else 
+           flag = true; 
+   } 
+   if (flag) 
+   { 
+       Console.WriteLine("Palindrome"); 
+   } 
+   else 
+       Console.WriteLine("Not Palindrome");
+
+--------------------
+
+
+to find the substring from a given string.
+internal static void findallsubstring(string str) 
+{ 
+   for (int i = 0; i < str.Length; ++i) 
+   { 
+       StringBuilder subString = new StringBuilder(str.Length - i); 
+       for (int j = i; j < str.Length; ++j) 
+       { 
+           subString.Append(str[j]); 
+           Console.Write(subString + " "); 
+       } 
+   } 
+}
+
+--------------------
+
+
+to find if a positive integer is prime or not?
+ static void Main(string[] args) 
+{ 
+    if (FindPrime(47)) 
+    { 
+        Console.WriteLine("Prime"); 
+    } 
+    else 
+    { 
+        Console.WriteLine("Not Prime"); 
+    } 
+    Console.ReadLine(); 
+}   
+internal static bool FindPrime(int number) 
+{ 
+    if (number == 1) return false; 
+    if (number == 2) return true; 
+    if (number % 2 == 0) return false; 
+     var squareRoot = (int)Math.Floor(Math.Sqrt(number)); 
+     for (int i = 3; i <= squareRoot; i += 2) 
+    { 
+        if (number % i == 0) return false; 
+    } 
+     return true; 
+}
+
+----------------------------
+

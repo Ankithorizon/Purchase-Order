@@ -1,0 +1,189 @@
+﻿@model PartTracking.Context.Models.DTO.PartTrackingData
+@using PartTracking.Context.Models.DTO;
+
+
+<style>
+    .dataImp {
+        color: red;
+        font-size: x-large;
+    }
+
+    .data {
+        color: blue;
+        font-size: large;
+    }
+
+    .label {
+        font-size: large;
+    }
+
+    .labelImp {
+        font-size: x-large;
+    }
+</style>
+
+<p></p>
+@if (TempData["Exception"] != null)
+{
+    <div class="container response">
+        <h3>Error : @TempData["Exception"]</h3>
+    </div>
+}
+else
+{
+    <!-- part data-->
+    <div>
+        <h4>Part - Data</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2 label">
+                Part #
+            </dt>
+            <dd class="col-sm-10 data">
+                @Html.DisplayFor(model => model.PartMasterId)
+            </dd>
+            <dt class="col-sm-2 label">
+                @Html.DisplayNameFor(model => model.Part)
+            </dt>
+            <dd class="col-sm-10 data">
+                @Html.DisplayFor(model => model.Part)
+            </dd>
+            <dt class="col-sm-2 labelImp">
+                QTY
+            </dt>
+            <dd class="col-sm-10 dataImp">
+                @Html.DisplayFor(model => model.Quantity)  @@WareHouse
+            </dd>
+        </dl>
+    </div>
+
+    <!-- part - orders data -->
+    <div>
+        <h4>Warehouse Orders - Data</h4>
+        <hr />
+
+        @if (Model.Orders.Count() > 0)
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Order #
+                        </th>
+                        <th>
+                            Order QTY
+                        </th>
+                        <th>
+                            Order Date
+                        </th>
+                        <th>
+                            Status
+                        </th>
+                        <th>
+                            #REF#
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Orders)
+                    {
+                        <tr>
+                            <td>
+                                @item.OrderMasterId
+                            </td>
+                            <td>
+                                @item.OrderQuantity
+                            </td>
+                            <td>
+                                @item.OrderDate.ToString("dd MMM yyyy")
+                            </td>
+                            @{
+                                string orderStatus = "";
+                                int value = (int)item.OrderStatus;
+                                if (Enum.IsDefined(typeof(OrderStatusType), value))
+                                    orderStatus = ((OrderStatusType)value).ToString();
+                                else
+                                    orderStatus = "N/A";
+
+                                if (value == 0)
+                                {
+                                    // Confirmed
+                                    <td style="color:green;font-size:large;">
+                                        @orderStatus
+                                    </td>
+                                }
+                                else if (value == 1)
+                                {
+                                    // Received
+                                    <td style="color:red; font-size:large;">
+                                        @orderStatus
+                                    </td>
+                                }
+                                else
+                                {
+                                    // Half_Received
+                                    <td style="color:blue; font-size:large;">
+                                        @orderStatus
+                                    </td>
+                                }
+                            }
+                            <td>
+                                @item.RefCode
+                            </td>
+                            <td>
+                                <a class="btn btn-primary receivingDetails"
+                                   data-id="@item.OrderMasterId"
+                                   href="javascript:void(0)">Track Receiving!</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p></p>
+            <div class="container" style="color:red; font-size:xx-large;">
+                Orders NOT Found!
+            </div>
+            <p></p>
+        }
+    </div>
+
+    <!-- part-receiving partial view -->
+    <div id="partReceiving">
+    </div>
+}
+<p></p>
+
+
+
+
+<script type="text/javascript">
+
+    $(".receivingDetails").click(function () {
+
+        var obj = {};
+        obj.Id = $(this).attr('data-id');
+
+        $.ajax({
+            type: "Get", //Method type
+            url: "/Tracking/GetReceivingDetailsByOrder?Id=" + obj.Id, //url to load partial view
+            data: JSON.stringify(obj.Id),
+            contentType: "application/json; charset=utf-8",
+            dataType: "html",
+            success: function (response) {
+                console.log(response);
+                $('#partReceiving').html(response);
+            },
+            failure: function (response) {
+
+            },
+            error: function (response) {
+
+            }
+        });
+    });
+
+</script>

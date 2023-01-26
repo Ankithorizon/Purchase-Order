@@ -1,0 +1,77 @@
+﻿@model PartTracking.Context.Models.DTO.PartMasterPartDetailsEditVM
+
+@{
+    ViewData["Title"] = "Engineering - Edit Part";
+}
+
+<style>
+    .header {
+        justify-content: center;
+        align-items: center;
+        border: 5px solid red;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        padding-left: 5px;
+        font-size: x-large;
+        text-align: center;
+    }
+</style>
+
+<div class="row">
+    <div class="col-sm-3">
+    </div>
+    <div class="col-sm-6 header">
+        Engineering - Edit Part
+    </div>
+    <div class="col-sm-3">
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" enctype="multipart/form-data"
+              asp-controller="Engineering"
+              asp-action="EditPartMasterPartDetail">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            @Html.HiddenFor(model => model.PartMasterId)
+            @Html.HiddenFor(model => model.PartDetailId)
+            @Html.HiddenFor(model => model.PreviousPartDrgFile)
+            @Html.HiddenFor(model => model.PreviousPartCode)
+            <div class="form-group">
+                <h2>Part # @Model.PartMasterId ##[@Model.PartDetailId]</h2>
+            </div>
+            <div class="form-group">
+                <label asp-for="PartCode" class="control-label"></label>
+                <input asp-for="PartCode" class="form-control" />
+                <span asp-validation-for="PartCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PartName" class="control-label"></label>
+                <input asp-for="PartName" class="form-control" />
+                <span asp-validation-for="PartName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PartDesc" class="control-label"></label>
+                <input asp-for="PartDesc" class="form-control" />
+                <span asp-validation-for="PartDesc" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PartDrgFile" class="control-label"></label>
+                <input asp-for="PartDrgFile" class="form-control" type="file" name="files" />
+                @Html.DisplayFor(model => model.PartDrgFile)
+                <span asp-validation-for="PartDrgFile" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Edit-Part!" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

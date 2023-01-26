@@ -1,0 +1,164 @@
+﻿@{
+    ViewData["Title"] = "Part-Tracking-Service";
+}
+
+<style>
+
+    .homePageHeader {
+        text-align: center;
+        vertical-align: middle;
+        color: black;
+        background-color: lightgray;
+        padding-bottom: 10px;
+        padding-top: 10px;
+        border: 2px solid green;
+        border-radius: 20px;
+    }
+    .titleHeader {
+        text-align: center;
+        vertical-align: middle;
+        padding-bottom: 10px;
+        padding-top: 10px;
+        border: 2px solid green;
+        border-radius: 10px;
+        background-color: lightskyblue;
+    }
+    .titleHeader {
+      font-size: medium;
+    }
+</style>
+
+<div class="container">
+    <div>
+        <div class="homePageHeader">
+            <h3>Part-Tracking-Service</h3>
+            <h5>Technology : .Net Core MVC / EF Core / Razor View / SQL Server-StoredProcedures-Transaction / JQuery / Bootstrap</h5>
+        </div>
+    </div>
+    <hr />
+    <p></p>
+
+    <div class="row">
+        <div class="col-sm-5">
+            <div>
+                <div class="titleHeader">
+                    <b>Engineering Department</b>
+                </div>
+                <p></p>
+                <div class="titleBody">
+                    <ul>
+                        <li>
+                            Create/Edit/View/Search Part
+                        </li>
+                    </ul>
+                </div>
+                <p></p>
+                <hr />
+                <div class="titleHeader">
+                    <b>Warehouse</b>
+                </div>
+                <p></p>
+                <div class="titleBody">
+                    <ul>
+                        <li>
+                            Create Order(Generate Request With Order-Status Confirmed) for Parts
+                        </li>
+                        <li>
+                            Edit - Order (Confirmed)
+                        </li>
+                        <li>
+                            View - Order (Confirmed/Received_WIP/Received)
+                        </li>
+                        <li>
+                            Search - Order (Confirmed/Received_WIP/Received)
+                        </li>
+                    </ul>
+                </div>
+                <p></p>
+                <hr />
+                <div class="titleHeader">
+                    <b>Receiving</b>
+                </div>
+                <p></p>
+                <div class="titleBody">
+                    <ul>
+                        <li>
+                            Receive Parts in Fully Quantity or in Installment Quantity
+                        </li>
+                        <li>
+                            View - Receiving Details - Warehouse Order Details - Part Details for,,, Received_WIP/Received - Orders
+                        </li>
+                        <li>
+                            Search - Order (Received_WIP/Received)
+                        </li>
+                        <li>
+                            Update Order (Status From Confirmed to Received_WIP - If Received By Installment Quantity)                            
+                        </li>
+                        <li>
+                            Update Order (Status From Confirmed to Received - If Received By Fully Quantity)
+                        </li>
+                        <li>
+                            Auto Update of Quantity for Part @@Warehouse
+                        </li>
+                    </ul>
+                </div>
+                <p></p>
+            </div>
+        </div>
+
+        <div class="col-sm-5">
+            <div>
+                <div class="titleHeader">
+                    <b>Production --&gt; WorkOrder</b>
+                </div>
+                <p></p>
+                <div class="titleBody">
+                    <ul>
+                        <li>
+                            WorkOrder Connects With More Than 1 Part
+                        </li>
+                        <li>
+                            WorkOrder Can Not Pull More Than Parts Required For WorkOrder#
+                        </li>
+                        <li>
+                            WorkOrder Can Not Pull If 0 Parts Available at Warehouse
+                        </li>
+                        <li>
+                            WorkOrder Can Pull Parts in Complete Quantity or in Installment Quantity
+                        </li>
+                        <li>
+                            WorkOrder@@Pulling-Parts --&gt; Update Quantity For Part @@WareHouse
+                        </li>
+                        <li>
+                            Search - WorkOrder
+                        </li>
+                    </ul>
+                </div>
+                <p></p>
+                <hr />
+                <div class="titleHeader">
+                    <b>Tracking [Warehouse Orders / Work Orders]</b>
+                </div>
+                <p></p>
+                <div class="titleBody">
+                    <ul>
+                        <li>
+                            Track Warehouse-Orders versus Part
+                        </li>
+                        <li>
+                            Track Receiving-Orders versus Part
+                        </li>
+                        <li>
+                            Track WorkOrders versus Part
+                        </li>
+                        <li>
+                            Track Pulling of Parts versus Part
+                        </li>
+                    </ul>
+                </div>
+                <p></p>
+            </div>
+        </div>
+    </div>
+</div>
+

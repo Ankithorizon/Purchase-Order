@@ -1,0 +1,265 @@
+﻿@model IEnumerable<PartTracking.Context.Models.DTO.ReceivePartView>
+@using PartTracking.Context.Models.DTO;
+
+<style>
+    .header {
+        justify-content: center;
+        align-items: center;
+        border: 5px solid red;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        padding-left: 5px;
+        font-size: x-large;
+        text-align: center;
+    }
+
+    .tableData {
+        font-size: x-large;
+    }
+</style>
+
+@{
+    ViewData["Title"] = "Receiving - Index";
+}
+
+<div class="row">
+    <div class="col-sm-3">
+    </div>
+    <div class="col-sm-6 header">
+        Receiving - Part Management
+    </div>
+    <div class="col-sm-3">
+    </div>
+</div>
+
+
+@if (TempData["SPResponse"] != null)
+{
+    <div class="container response">
+        <h3>@TempData["SPResponse"]</h3>
+    </div>
+}
+<p></p>
+
+@if (TempData["Exception"] != null)
+{
+    <div class="container response">
+        <h3>@TempData["Exception"]</h3>
+    </div>
+}
+<p></p>
+
+<p class="tableData">
+    <a asp-action="ReceivePart">Receive Part!</a>
+</p>
+
+<p></p>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-1">
+        </div>
+        <div class="col-sm-6" style="font-size:x-large; font-display:block;">
+            <!-- search by part -->
+            <p>
+                @using (@Html.BeginForm("Index", "Receiving", FormMethod.Get))
+                {
+                    @Html.TextBox("SearchString")
+                    <input style="margin-top:-10px;"
+                           type="submit"
+                           class="btn btn-primary"
+                           value="Search Part / RefCode" />
+                }
+            </p>
+            <hr />
+            <p></p>
+        </div>
+    </div>
+</div>
+<p></p>
+
+
+@if (Model.Count() > 0)
+{
+    <table class="table" id="ReceivePartGrid">
+        <thead>
+            <tr>
+                <th>
+                    Receive #
+                </th>
+                <th>
+                    Part
+                </th>
+                <th>
+                    R-QTY
+                </th>
+                <th>
+                    O-QTY
+                </th>
+                <th>
+                    <a asp-action="Index"
+                       asp-route-sortOrder="@ViewData["ReceiveDateSortParm"]">R-Date</a>
+                </th>
+                <th>
+                    O-Date
+                </th>
+                <th>
+                    O-Status
+                </th>
+                <th>
+                    <a asp-action="Index"
+                       asp-route-sortOrder="@ViewData["RefCodeSortParm"]">#REF#</a>
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @item.ReceivePartId
+                    </td>
+                    @if (item.Part.Length >= 15)
+                    {
+                        <td>
+                            @(item.Part.Substring(0,15)+"...")
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            @item.Part
+                        </td>
+                    }
+
+                    <td>
+                        @item.ReceiveQuantity
+                    </td>
+                    <td>
+                        @item.OrderQuantity
+                    </td>
+                    <td>
+                        @item.ReceiveDate.ToString("dd MMM yyyy")
+                    </td>
+                    <td>
+                        @item.OrderDate.ToString("dd MMM yyyy")
+                    </td>
+                    @{
+                        string orderStatus = "";
+                        int value = (int)item.OrderStatus;
+                        if (Enum.IsDefined(typeof(OrderStatusType), value))
+                            orderStatus = ((OrderStatusType)value).ToString();
+                        else
+                            orderStatus = "N/A";
+
+                        if (value == 0)
+                        {
+                            // Confirmed
+                            <td style="color:green;font-size:large;">
+                                @orderStatus
+                            </td>
+                        }
+                        else if (value == 1)
+                        {
+                            // Received
+                            <td style="color:red; font-size:large;">
+                                @orderStatus
+                                <br />
+                                @item.ReceiveQuantity / @item.OrderQuantity
+                            </td>
+                        }
+                        else
+                        {
+                            // Half_Received
+                            <td style="color:blue; font-size:large;">
+                                @orderStatus
+                                <br />
+                                @item.ReceiveQuantity / @item.OrderQuantity
+                            </td>
+                        }
+                    }
+                    <td>
+                        @item.RefCode
+                    </td>
+                    <td>
+                        <a class="btn btn-primary details"
+                           data-id="@item.ReceivePartId"
+                           href="javascript:void(0)">View</a>
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p></p>
+    <div class="container" style="color:red; font-size:xx-large;">
+        Part NOT Found!
+    </div>
+    <p></p>
+}
+
+<!--Bootstrap Pop Up modal-->
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content" style="width:700px;">
+            <div class="modal-header">
+                <h4 class="modal-title">Received Part Details!</h4>
+            </div>
+            <div class="modal-body" id="ModalBody">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!--End of Bootstrap Pop-Up modal-->
+
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+    <script type="text/javascript">
+
+        $(function () {
+            $("#ReceivePartGrid .details").click(function () {
+                var obj = {};
+                obj.Id = $(this).attr('data-id');
+                // console.log(obj.Id);
+
+                $.ajax({
+                    type: "Get", //Method type
+                    url: "/Receiving/ReceivedPartDetails?Id=" + obj.Id, //url to load partial view
+                    data: JSON.stringify(obj.Id),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "html",
+                    success: function (response) {
+                        $('#ModalBody').html(response);
+                        $('#myModal').modal('show');
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            });
+        });
+
+        // disappear after 3 seconds,,,
+        setTimeout(function () { $('.response').fadeOut(); }, 3000);
+
+    </script>
+
+
+}

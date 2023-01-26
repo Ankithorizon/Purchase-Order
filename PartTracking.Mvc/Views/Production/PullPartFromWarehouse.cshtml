@@ -1,0 +1,195 @@
+﻿@model PartTracking.Context.Models.DTO.CustomerWorkOrderView
+
+@{
+    ViewData["Title"] = "Production - Pull Part From Warehouse";
+}
+
+
+<style>
+    .header {
+        justify-content: center;
+        align-items: center;
+        border: 5px solid red;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        padding-left: 5px;
+        font-size: x-large;
+        text-align: center;
+    }
+
+    .tableData {
+        font-size: x-large;
+    }
+
+    .highlight{
+        color:blue;
+        font-display:block;
+    }
+    .restriction {
+        color: red;
+        font-display: block;
+    }
+
+    .pullQuantityForm{
+        background-color:lightgoldenrodyellow;
+    }
+
+    .canNotPull {
+        color: red;
+        font-display: block;
+    }
+</style>
+
+<div class="row">
+    <div class="col-sm-3">
+    </div>
+    <div class="col-sm-6 header">
+        Production - Pull Part From Warehouse
+    </div>
+    <div class="col-sm-3">
+    </div>
+</div>
+<p></p>
+
+<p></p>
+<div class="container tableData">
+    <div class="row">
+        <!-- view data -->
+        <div class="col-sm-6" >
+            <dl class="row">
+                <dt class="col-sm-8">
+                    @Html.DisplayNameFor(model => model.WOId)
+                </dt>
+                <dd class="col-sm-4 highlight">
+                    @Html.DisplayFor(model => model.WOId)
+                </dd>
+                <dt class="col-sm-8">
+                    @Html.DisplayNameFor(model => model.WorkOrderId)
+                </dt>
+                <dd class="col-sm-4 highlight">
+                    @Html.DisplayFor(model => model.WorkOrderId)
+                </dd>
+                <dt class="col-sm-8">
+                    @Html.DisplayNameFor(model => model.PartQuantityRequired)
+                </dt>
+                <dd class="col-sm-4 highlight">
+                    @Html.DisplayFor(model => model.PartQuantityRequired)
+                </dd>
+                <dt class="col-sm-8">
+                    @Html.DisplayNameFor(model => model.BalanceAfterPull)
+                </dt>
+                <dd class="col-sm-4 restriction">
+                    @Html.DisplayFor(model => model.BalanceAfterPull)
+                </dd>
+                <dt class="col-sm-8">
+                    @Html.DisplayNameFor(model => model.PartMasterId)
+                </dt>
+                <dd class="col-sm-4">
+                    @Html.DisplayFor(model => model.PartMasterId)
+                </dd>
+                <dt class="col-sm-8">
+                    @Html.DisplayNameFor(model => model.PartName)
+                </dt>
+                <dd class="col-sm-4">
+                    @Html.DisplayFor(model => model.PartName)
+                </dd>
+                <dt class="col-sm-8">
+                    @Html.DisplayNameFor(model => model.PartCode)
+                </dt>
+                <dd class="col-sm-4">
+                    @Html.DisplayFor(model => model.PartCode)
+                </dd>
+                <dt class="col-sm-8">
+                    @Html.DisplayNameFor(model => model.PartQuantityAtWarehouse)
+                </dt>
+                @if (Model.PartQuantityAtWarehouse == null)
+                {
+                    <dd class="col-sm-4 restriction">
+                        0
+                    </dd>
+                }
+                else
+                {
+                    <dd class="col-sm-4 restriction">
+                        @Html.DisplayFor(model => model.PartQuantityAtWarehouse)
+                    </dd>
+                }
+                <dt class="col-sm-8">
+                    @Html.DisplayNameFor(model => model.CustomerOrderId)
+                </dt>
+                <dd class="col-sm-4">
+                    @Html.DisplayFor(model => model.CustomerOrderId)
+                </dd>
+                <dt class="col-sm-8">
+                    @Html.DisplayNameFor(model => model.ProductName)
+                </dt>
+                <dd class="col-sm-4">
+                    @Html.DisplayFor(model => model.ProductName)
+                </dd>
+                <dt class="col-sm-8">
+                    @Html.DisplayNameFor(model => model.OrderQuantity)
+                </dt>
+                <dd class="col-sm-4">
+                    @Html.DisplayFor(model => model.OrderQuantity)
+                </dd>
+            </dl>
+        </div>
+        
+        <!-- gap adjustment -->
+        <div class="col-sm-1"></div>
+        <!-- pull quantity form -->
+        <div class="col-sm-5 pullQuantityForm">
+            @if (Model.PartQuantityAtWarehouse == null || Model.PartQuantityAtWarehouse == 0)
+            {
+                <div class="canNotPull">
+                    Warehouse has ZERO Quantity
+                    <p></p>
+                    Of Part# [ @Model.PartCode - @Model.PartName ]
+                    <p></p>
+                    For Work-Order# @Model.WorkOrderId - #[@Model.WOId]
+                </div>
+            }
+            else if (Model.BalanceAfterPull==0)
+            {
+                <div class="canNotPull">
+                    Work-Order# @Model.WorkOrderId
+                    <p></p>
+                    has already pulled all required 
+                    <p></p>
+                    Part# [ @Model.PartCode - @Model.PartName ] - #[@Model.WOId]           
+                </div>
+            }
+            else
+            {
+        <form asp-action="PullPartFromWarehouse">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @Html.HiddenFor(model => model.WOId)
+            @Html.HiddenFor(model => model.WorkOrderId)
+            @Html.HiddenFor(model => model.CustomerOrderId)
+            @Html.HiddenFor(model => model.PartMasterId)
+            @Html.HiddenFor(model => model.PartQuantityRequired)
+            @Html.HiddenFor(model => model.PartQuantityAtWarehouse)
+            @Html.HiddenFor(model => model.BalanceAfterPull)
+
+            <div class="form-group">
+                <label asp-for="PullQuantity" class="control-label"></label>
+                <input asp-for="PullQuantity" class="form-control" />
+                <span asp-validation-for="PullQuantity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Pull-From-Warehouse" class="btn btn-primary" />
+            </div>
+        </form>
+            }
+        </div>
+    </div>
+</div>
+<p></p>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

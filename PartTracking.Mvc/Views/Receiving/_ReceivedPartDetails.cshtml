@@ -1,0 +1,186 @@
+﻿@model PartTracking.Context.Models.DTO.ReceivedPartDetailsView
+@using PartTracking.Context.Models.DTO;
+
+<style> 
+
+    .exception {
+        color: red;
+        font-size: x-large;
+    }
+
+    .receivingDetails {
+        color: green;
+        font-size: x-large;
+    }
+    .orderDetails {
+        color: blue;
+        font-size: x-large;
+    }
+    .partDetails {
+        color: indigo;
+        font-size: x-large;
+    }
+</style>
+
+@if (TempData["Exception"] != null)
+{
+    <div class="container exception">
+        <h3>@TempData["Exception"]</h3>
+    </div>
+}
+else
+{
+<div class="container">
+
+    <!-- Receiving Details -->
+    <h3>Receiving Details</h3>
+    <div class="container receivingDetails">
+        <div class="row">
+            <div class="col-sm-6">
+                Receive #
+            </div>
+            <div class="col-sm-6">
+                @Html.DisplayFor(model => model.ReceivePartView.ReceivePartId)
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                Receive Date
+            </div>
+            <div class="col-sm-6">
+                @Html.DisplayFor(model => model.ReceivePartView.ReceiveDate)
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                Receive Quantity
+            </div>
+            <div class="col-sm-6">
+                @Html.DisplayFor(model => model.ReceivePartView.ReceiveQuantity)
+            </div>
+        </div>
+    </div>
+
+
+    <p></p>
+    <hr />
+    <!-- Warehouse-Order Details -->
+    <h3> Warehouse-Order Details</h3>
+    <div class="container orderDetails">
+        <div class="row">
+            <div class="col-sm-6">
+                Order #
+            </div>
+            <div class="col-sm-6">
+                @Html.DisplayFor(model => model.OrderMasterView.OrderMasterId)
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                Order Date
+            </div>
+            <div class="col-sm-6">
+                @Html.DisplayFor(model => model.OrderMasterView.OrderDate)
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                Order Quantity
+            </div>
+            <div class="col-sm-6">
+                @Html.DisplayFor(model => model.OrderMasterView.OrderQuantity)
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                Reference #
+            </div>
+            <div class="col-sm-6">
+                @Html.DisplayFor(model => model.OrderMasterView.RefCode)
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                Order Status
+            </div>
+            @if (Model != null && Model.OrderMasterView != null)
+            {
+                string orderStatus = "";
+                int value = (int)Model.OrderMasterView.OrderStatus;
+                if (Enum.IsDefined(typeof(OrderStatusType), value))
+                    orderStatus = ((OrderStatusType)value).ToString();
+                else
+                    orderStatus = "N/A";
+
+                if (value == 0)
+                {
+                    // Confirmed
+                    <div class="col-sm-6" style="color:green;">
+                        @orderStatus
+                    </div>
+                }
+                else if (value == 1)
+                {
+                    // Received
+                    <div class="col-sm-6" style="color:red;">
+                        @orderStatus
+                    </div>
+                }
+                else
+                {
+                    // Half_Received
+                    <div class="col-sm-6" style="color:blue;">
+                        @orderStatus
+                    </div>
+                }
+            }
+            else
+            {
+            }
+        </div>
+    </div>
+
+
+    <p></p>
+    <hr />
+    <!-- Part Details -->
+    <h3> Part Details</h3>
+    <div class="container partDetails">
+        <div class="row">
+            <div class="col-sm-6">
+                Part #
+            </div>
+            <div class="col-sm-6">
+                @Html.DisplayFor(model => model.PartMasterPartDetailsView.PartMasterId)
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                Part Code
+            </div>
+            <div class="col-sm-6">
+                @Html.DisplayFor(model => model.PartMasterPartDetailsView.PartCode)
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                Part Name
+            </div>
+            <div class="col-sm-6">
+                @Html.DisplayFor(model => model.PartMasterPartDetailsView.PartName)
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                Quantity Available
+            </div>
+            <div class="col-sm-6">
+                @Html.DisplayFor(model => model.PartMasterPartDetailsView.Quantity)
+            </div>
+        </div>
+    </div>
+    <p></p>
+</div>
+}
+
+

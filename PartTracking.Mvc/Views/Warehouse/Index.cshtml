@@ -1,0 +1,203 @@
+﻿@model IEnumerable<PartTracking.Context.Models.DTO.WarehouseOrderView>
+@using PartTracking.Context.Models.DTO;
+
+@{
+    ViewData["Title"] = "Warehouse - Index";
+}
+
+<style>
+    .header {
+        justify-content: center;
+        align-items: center;
+        border: 5px solid red;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        padding-left: 5px;
+        font-size: x-large;
+        text-align: center;
+    }
+
+    .tableData {
+        font-size: x-large;
+    }
+</style>
+
+<div class="row">
+    <div class="col-sm-3">
+    </div>
+    <div class="col-sm-6 header">
+        Warehouse - Part Management
+    </div>
+    <div class="col-sm-3">
+    </div>
+</div>
+
+<p></p>
+@if (TempData["RefCode"] != null)
+{
+    <div class="container response">
+        <h3>Order Confirmation Code : @TempData["RefCode"]</h3>
+    </div>
+}
+<p></p>
+
+<p></p>
+@if (TempData["Exception"] != null)
+{
+    <div class="container response">
+        <h3>Error : @TempData["Exception"]</h3>
+    </div>
+}
+<p></p>
+
+<p></p>
+@if (TempData["SPResponse"] != null)
+{
+    <div class="container response">
+        <h3>@TempData["SPResponse"]</h3>
+    </div>
+}
+<p></p>
+
+<p class="tableData">
+    <a asp-action="OrderPart">Order Part!</a>
+</p>
+
+<p></p>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-1">
+        </div>
+        <div class="col-sm-6" style="font-size:x-large; font-display:block;">
+            <!-- search by part -->
+            <p>
+                @using (@Html.BeginForm("Index", "Warehouse", FormMethod.Get))
+                {
+                    @Html.TextBox("SearchString")
+                    <input style="margin-top:-10px;"
+                           type="submit"
+                           class="btn btn-primary"
+                           value="Search Part" />
+                }
+            </p>
+            <hr />
+            <p></p>
+        </div>
+    </div>
+</div>
+<p></p>
+
+@if (Model.Count() > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Order#
+                </th>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["PartNameSortParm"]">@Html.DisplayNameFor(model => model.PartName)</a>
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.OrderQuantity)
+                </th>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]">@Html.DisplayNameFor(model => model.OrderDate)</a>
+                </th>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["OrderStatusSortParm"]">@Html.DisplayNameFor(model => model.OrderStatus)</a>
+                </th>
+                <th>
+                    Ref-Code#
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OrderMasterId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PartCode)
+                    <br />
+                    [@Html.DisplayFor(modelItem => item.PartName)]
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OrderQuantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OrderDate)
+                </td>
+                @{
+                    string orderStatus = "";
+                    int value = (int)item.OrderStatus;
+                    if (Enum.IsDefined(typeof(OrderStatusType), value))
+                        orderStatus = ((OrderStatusType)value).ToString();
+                    else
+                        orderStatus = "N/A";
+
+                    if (value == 0)
+                    {
+                        // Confirmed
+                        <td style="color:green;font-size:large;">
+                            @orderStatus
+                        </td>
+                    }
+                    else if (value == 1)
+                    {
+                        // Received
+                        <td style="color:red; font-size:large;">
+                            @orderStatus
+                        </td>
+                    }
+                    else
+                    {
+                        // Half_Received
+                        <td style="color:blue; font-size:large;">
+                            @orderStatus
+                        </td>
+                    }
+                }
+                <td>
+                    @Html.DisplayFor(modelItem => item.RefCode)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "OrderEdit", new { id = item.OrderMasterId }) |
+                    @Html.ActionLink("Details", "OrderDetails", new { id = item.OrderMasterId })
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p></p>
+    <div class="container" style="color:red; font-size:xx-large;">
+        Part NOT Found!
+    </div>
+    <p></p>
+}
+
+@section Scripts {
+
+    <script type="text/javascript">
+
+        // disappear after 3 seconds,,,
+        setTimeout(function () { $('.response').fadeOut(); }, 6000);
+
+        function DisableBackButton() {
+            window.history.forward()
+        }
+        DisableBackButton();
+        window.onload = DisableBackButton;
+        window.onpageshow = function (evt) { if (evt.persisted) DisableBackButton() }
+        window.onunload = function () { void (0) }
+
+    </script>
+
+}
+
