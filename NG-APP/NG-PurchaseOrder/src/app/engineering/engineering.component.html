@@ -1,5 +1,88 @@
 <div class="container">
 
+    <!-- modal-->
+    <div>
+        <ng-template #mymodal let-modal>
+            <div>
+                <div class="modal-header">
+                    <h4 class="modal-title" id="modal-basic-title">Part-Details</h4>
+                    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                        <span aria-hidden="true">
+                            ×
+                        </span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <h5>Part Master #</h5>
+                        </div>
+                        <div class="col-sm-7">
+                            {{part.partMasterId}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <h5>Part Code</h5>
+                        </div>
+                        <div class="col-sm-7">
+                            {{part.partCode}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <h5>Part Name</h5>
+                        </div>
+                        <div class="col-sm-7">
+                            {{part.partName}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <h5>Quantity</h5>
+                        </div>
+                        <div *ngIf="part.quantity" class="col-sm-7 qty">
+                            {{part.quantity}}
+                        </div>
+                        <div *ngIf="!part.quantity" class="col-sm-7 noQty">
+                            N/A
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <h5>Part Detail ##</h5>
+                        </div>
+                        <div class="col-sm-7">
+                            {{part.partDetailId}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <h5>Part Desc</h5>
+                        </div>
+                        <div class="col-sm-7">
+                            {{part.partDesc}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <h5>Part Drg File</h5>
+                        </div>
+                        <div class="col-sm-7">
+                            {{part.partDrgFile}}
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Ok</button>
+                </div>
+            </div>
+        </ng-template>
+    </div>
+
+
+
     <div class="mainHeader">Engineering - Part Management</div>
 
     <div class="row">
@@ -58,12 +141,13 @@
                                             <div class="col-1"></div>
                                             <div class="col-1">
                                                 <button type="button" 
-                                                    (click)="detailPart(part)" 
-                                                    class="btn btn-danger">
-                                                    <i class="bi bi-trash"></i>
+                                                    (click)="open(mymodal, part)"
+                                                    class="btn btn-success">
+                                                    <i class="bi bi-ticket-detailed"></i>
                                                 </button>
                                             </div>
-                                            <div class="col-1"></div>                                         
+                                            <div class="col-1">                                               
+                                            </div>                                         
                                             <div class="col-7"></div>
                                         </div>
                                     </td>
