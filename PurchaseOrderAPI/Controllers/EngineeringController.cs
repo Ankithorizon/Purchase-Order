@@ -72,5 +72,35 @@ namespace PurchaseOrderAPI.Controllers
                 return BadRequest();
             }
         }
+
+
+        [HttpGet]
+        [Route("partEdit/{selectedPartId:int}")]
+        public IActionResult PartEdit(int selectedPartId)
+        {
+            var partMaster = _unitOfWork.PartMasters.GetById(selectedPartId);
+            var partDetail = _unitOfWork.PartDetails.Find(x => x.PartMasterId == selectedPartId);
+            if (partMaster != null && partDetail != null && partDetail.Count() > 0)
+            {
+                PartMasterPartDetailsEditVM partMasterpartDetailsEdit = new PartMasterPartDetailsEditVM()
+                {
+                    PartMasterId = partMaster.PartMasterId,
+                    PartCode = partMaster.PartCode,
+                    PartName = partMaster.PartName,
+                    Quantity = (int?)partMaster.Quantity,
+                    PartDesc = partDetail.FirstOrDefault().PartDesc,
+                    PartDetailId = partDetail.FirstOrDefault().PartDetailId,
+                    PartDrgFile = partDetail.FirstOrDefault().PartDrgFile,
+                    PreviousPartDrgFile = partDetail.FirstOrDefault().PartDrgFile,
+                    PreviousPartCode = partMaster.PartCode
+                };
+                return Ok(partMasterpartDetailsEdit);
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
     }
 }

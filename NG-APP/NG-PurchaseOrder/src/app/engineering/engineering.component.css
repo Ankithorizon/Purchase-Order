@@ -25,3 +25,9 @@
 .qty{
     font-weight: bold;
 }
+
+.badRequest{
+    color : red;
+    font-weight: bold;
+    font-size: larger;
+}

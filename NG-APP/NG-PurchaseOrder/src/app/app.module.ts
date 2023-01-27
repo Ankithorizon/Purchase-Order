@@ -22,13 +22,15 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { HeaderComponent } from './header/header.component';
 import { EngineeringComponent } from './engineering/engineering.component';
+import { PartEditComponent } from './part-edit/part-edit.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     HeaderComponent,
-    EngineeringComponent
+    EngineeringComponent,
+    PartEditComponent
   ],
   imports: [
     BrowserModule,

@@ -12,7 +12,7 @@
                         </span>
                     </button>
                 </div>
-                <div class="modal-body">
+                <div *ngIf="part" class="modal-body">
                     <div class="row">
                         <div class="col-sm-5">
                             <h5>Part Master #</h5>
@@ -73,6 +73,9 @@
                         </div>
                     </div>
                     
+                </div>
+                <div *ngIf="!part" class="modal-body badRequest">
+                    Bad Request!                
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Ok</button>

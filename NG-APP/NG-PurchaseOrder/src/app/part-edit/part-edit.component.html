@@ -1,0 +1,96 @@
+<div class="container">
+    <div class="col-md-12 mx-auto">
+        <div class="card">
+            <div class="card-header componentHeader">
+                <h4>
+                    <div>
+                        #{{partMasterId}}) ##{{partDetailId}} [Part - Edit]
+                    </div>
+                </h4>
+            </div>
+            <div class="card-body">
+                <form *ngIf="partEditForm" 
+                    class="form-partEdit" 
+                    [formGroup]="partEditForm" 
+                    (ngSubmit)="onSubmit()">
+
+                    <div class="row">
+                        <div class="col-md-4 mx-auto"></div>
+                        <div class="col-md-4 mx-auto">
+                            <div class="form-group">
+                                <label>Part Code</label>
+                                <input type="text" 
+                                    formControlName="partCode" 
+                                    class="form-control"
+                                    [ngClass]="{ 'is-invalid': submitted && f['partCode'].errors }" />
+                                <div *ngIf="submitted && f['partCode'].errors" 
+                                    class="invalid-feedback">
+                                    <div *ngIf="f['partCode'].errors['required']">
+                                        Part Code is required
+                                    </div>
+                                </div>                             
+                            </div>
+                            <p></p>
+                            <div class="form-group">
+                                <label>Part Name</label>
+                                <input type="text" formControlName="partName" 
+                                    class="form-control"
+                                    [ngClass]="{ 'is-invalid': submitted && f['partName'].errors }" />
+                                <div *ngIf="submitted && f['partName'].errors" 
+                                    class="invalid-feedback">
+                                    <div *ngIf="f['partName'].errors['required']">
+                                        Part Name is required
+                                    </div>
+                                </div>
+                            </div>
+                            <p></p>
+                            <div class="form-group">
+                                <label>Part Desc</label>
+                                <input type="text" formControlName="partDesc" 
+                                    class="form-control"
+                                    [ngClass]="{ 'is-invalid': submitted && f['partDesc'].errors }" />
+                                <div *ngIf="submitted && f['partDesc'].errors" class="invalid-feedback">
+                                    <div *ngIf="f['partDesc'].errors['required']">
+                                        Part Desc is required
+                                    </div>
+                                </div>
+                            </div>
+                            <p></p>
+                            <div class="form-group">
+                                <label>Part Drf File</label>
+                                <input type="text" formControlName="partDrgFile" 
+                                    class="form-control"
+                                    [ngClass]="{ 'is-invalid': submitted && f['partDrgFile'].errors }" />
+                                <div *ngIf="submitted && f['partDrgFile'].errors" class="invalid-feedback">
+                                    <div *ngIf="f['partDrgFile'].errors['required']">
+                                        Part Drg File is required
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-md-4 mx-auto"></div>  
+                    </div>
+                    <hr />
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <button type="submit" 
+                                    class="btn btn-success">
+                                    Edit Part
+                                </button>
+                            </div>
+                            <div class="col-sm-6">
+                                <button type="button" 
+                                    (click)="goBack()" 
+                                    class="btn btn-primary cancelBtn">
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

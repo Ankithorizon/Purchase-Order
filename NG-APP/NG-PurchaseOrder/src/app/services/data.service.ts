@@ -23,5 +23,9 @@ export class DataService {
   getPartDetails(selectedPartId: number): Observable<any> {
     return this.http.get<any>(this.EngineeringApi + '/getPartDetails/' + selectedPartId);
   }
+  // get
+  editPart(selectedPartId: number): Observable<any> {
+    return this.http.get<any>(this.EngineeringApi + '/partEdit/' + selectedPartId);
+  }
 
 }

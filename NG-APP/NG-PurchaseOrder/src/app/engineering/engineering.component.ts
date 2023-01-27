@@ -65,21 +65,20 @@ export class EngineeringComponent implements OnInit {
       });
   }
 
-  editPart(part) {
-    
-  }
-  detailPart(part) {
-     this.dataService.getPartDetails(Number(part.partMasterId))
+  editPart(selectedPart) {
+     this.dataService.editPart(Number(selectedPart.partMasterId))
       .subscribe(
         data => {          
-          console.log(data);
-          this.part = data;
+          console.log(data);  
+          
+          this.router.navigate(['/part-edit'], { state: { selectedPart: {data} } });
+          
         },
         error => {
-          console.log(error);      
-      });
-  }
-
+          console.log(error);            
+       
+        });
+  } 
 
   // Modal
   open(content, selectedPart) {
@@ -97,7 +96,16 @@ export class EngineeringComponent implements OnInit {
           });
         },
         error => {
-          console.log(error);      
+          // console.log(error);             
+          if (error.status == 400) {
+            this.part = null;
+          }
+          this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+            this.closeResult = `Closed with: ${result}`;
+          }, (reason) => {
+            this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+            console.log(this.closeResult);
+          });
         });
   }   
   private getDismissReason(reason: any): string {
