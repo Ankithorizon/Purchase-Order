@@ -84,6 +84,13 @@ export class PartEditComponent implements OnInit {
     this.submitted = true;
     if (this.partEditForm.valid) {
       console.log('form valid!');
+
+      this.partModel.partCode = this.partEditForm.value["partCode"];
+      this.partModel.partName = this.partEditForm.value["partName"];
+      this.partModel.partDesc = this.partEditForm.value["partDesc"];
+      this.partModel.partDrgFile = this.partEditForm.value["partDrgFile"];
+      console.log(this.partModel);
+
     }
     else {
       console.log('form in-valid!');
@@ -94,3 +101,7 @@ export class PartEditComponent implements OnInit {
     this.router.navigate(['/engineering']);
   }
 }
+
+
+// check for duplicate [part-code]
+// maximum 20 characters [part-code]
