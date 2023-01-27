@@ -18,8 +18,8 @@ export class EngineeringComponent implements OnInit {
   
   page: number = 1;
   count: number = 0;
-  tableSize: number = 3;
-  tableSizes: any = [3, 6, 9, 12];
+  tableSize: number = 10;
+  tableSizes: any = [10,20,30];
   
   constructor(public localDataService: LocalDataService, public dataService: DataService, private router: Router) { }
 
@@ -27,16 +27,43 @@ export class EngineeringComponent implements OnInit {
     this.getAllParts();  
   }
 
+  onTableDataChange(event: any) {
+    this.page = event;
+    if (this.parts != null && this.parts.length > 0) {      
+    }
+    else {
+      this.getAllParts();
+    }
+  }
+  onTableSizeChange(event: any): void {
+    this.tableSize = event.target.value;
+    this.page = 1;
+    if (this.parts != null && this.parts.length > 0) {      
+    }
+    else {
+      this.getAllParts();
+    }
+  }
+
+
   getAllParts(){
     this.dataService.allParts()
       .subscribe(
         data => {          
           console.log(data);
+          this.parts = data;
+          this.localDataService.SetParts(data);
         },
         error => {
           console.log(error);      
       });
   }
 
+  editPart(part) {
+    
+  }
+  detailPart(part) {
+    
+  }
 
 }

@@ -1,0 +1,27 @@
+.mainHeader {
+    text-align: center;
+    color: darkolivegreen;
+    font-size: xx-large;
+    font-weight: bold;
+    margin: 20px;
+}
+
+.componentHeader {
+    background-color: lightyellow;
+}
+
+.noParts {
+    color: red;
+    font-size: x-large;
+}
+
+.searchControl {
+    width: 300px;
+}
+
+.noQty{
+    color: red;
+}
+.qty{
+    font-weight: bold;
+}
