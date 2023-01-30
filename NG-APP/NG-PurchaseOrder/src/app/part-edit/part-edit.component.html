@@ -64,17 +64,20 @@
                             <p></p>
                             <div class="form-group">
                                 <label>
-                                    Part Drf File
+                                    <u>Part Drf File</u>
                                 </label>
                                 <div>
-                                    <b>{{selectedPartFileName}}</b>
+                                    <b>{{selectedPartFileName}}</b>                                  
                                 </div>
-                                <input 
-                                    type="file" 
-                                    id="fileInput" 
-                                    (change)="selectFile($event)" 
-                                    name="fileInput" />
-                                                        
+                                <div class="container">
+                                    <input class="file" type="file" id="fileInput" (change)="selectFile($event)" name="fileInput" />  
+                                </div>
+                                <p></p>
+                                <div class="container">
+                                    <button type="button" (click)="resetPartFile()" class="btn btn-warning">
+                                        Reset Part File
+                                    </button>
+                                </div>
                             </div>
 
                         </div>

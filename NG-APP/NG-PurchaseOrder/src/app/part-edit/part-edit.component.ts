@@ -99,14 +99,11 @@ export class PartEditComponent implements OnInit {
 
     this.submitted = true;
     if (this.partEditForm.valid) {
-      console.log('form valid!');
 
       this.partModel.partCode = this.partEditForm.value["partCode"];
       this.partModel.partName = this.partEditForm.value["partName"];
       this.partModel.partDesc = this.partEditForm.value["partDesc"];
       this.partModel.partDrgFile = this.selectedPartFileName;
-      console.log(this.partModel);
-
 
       this.partEdit.partCode = this.partEditForm.value["partCode"];
       this.partEdit.partName = this.partEditForm.value["partName"];
@@ -115,17 +112,14 @@ export class PartEditComponent implements OnInit {
       this.partEdit.partDetailId = Number(this.partDetailId);
 
       this.partEdit.partFile = this.currentFile;
-
-      console.log(this.partEdit);
-
         
+      console.log(this.partEdit);
       this.dataService.upload(this.partEdit).subscribe(
         (event: any) => {
           if (event.type === HttpEventType.UploadProgress) {
             this.progress = Math.round(100 * event.loaded / event.total);
           } else if (event instanceof HttpResponse) {
             this.apiMessage = event.body.responseMessage;
-            console.log(this.apiMessage);
             this.apiError = false;
           }
         },
@@ -137,7 +131,6 @@ export class PartEditComponent implements OnInit {
           else {
             this.apiMessage = err;
           }
-          console.log(this.apiMessage);
         });
       /*
       if (this.currentFile) {     
@@ -166,6 +159,10 @@ export class PartEditComponent implements OnInit {
   }
 
 
+  resetPartFile() {
+    this.currentFile = undefined;
+    this.fileName = 'Select File';
+  }
 }
 
 
