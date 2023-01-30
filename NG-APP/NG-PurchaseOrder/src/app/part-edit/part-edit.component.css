@@ -5,3 +5,12 @@
 .cancelBtn {
     float: right;
 }
+
+.apiError { 
+    color : red;
+    font-size: large;
+}
+.apiSuccess{
+    color: green;
+    font-size: large;
+}

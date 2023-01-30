@@ -8,5 +8,9 @@
     <ProjectReference Include="..\PartTracking.Service\PartTracking.Service.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Files\PartFiles\" />
+  </ItemGroup>
+
 
 </Project>

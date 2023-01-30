@@ -5,6 +5,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LocalDataService } from '../services/local-data.service';
 import { Location } from '@angular/common';
+import PartEditDTO from '../models/partEditDTO';
+import { HttpEventType, HttpResponse } from '@angular/common/http';
  
 @Component({
   selector: 'app-part-edit',
@@ -12,6 +14,16 @@ import { Location } from '@angular/common';
   styleUrls: ['./part-edit.component.css']
 })
 export class PartEditComponent implements OnInit {
+
+  // part file upload
+  currentFile?: File;
+  progress = 0;
+  apiMessage = '';
+  apiError = false;
+  fileName = 'Select File';
+  fileInfos?: Observable<any>;  
+  partEdit = new PartEditDTO();
+
 
   myState;
   selectedPart = {
@@ -22,6 +34,7 @@ export class PartEditComponent implements OnInit {
     partDesc: '',
     partDrgFile: '',
   };
+  selectedPartFileName = '';
 
   partMasterId = 0;
   partDetailId = 0;
@@ -43,7 +56,7 @@ export class PartEditComponent implements OnInit {
     public localDataService: LocalDataService,
     public dataService: DataService,
     private router: Router) {
-    }
+  }
 
 
   ngOnInit(): void {
@@ -61,16 +74,16 @@ export class PartEditComponent implements OnInit {
         partCode: ['', Validators.required],
         partName: ['', Validators.required],
         partDesc: ['', Validators.required],
-        partDrgFile: ['', Validators.required],
       });
 
       // path form values
       this.partEditForm.setValue({
                 partName: this.selectedPart.partName,
                 partCode: this.selectedPart.partCode,
-                partDesc: this.selectedPart.partDesc,
-                partDrgFile: this.selectedPart.partDrgFile,
+                partDesc: this.selectedPart.partDesc,                
       });
+      this.selectedPartFileName = this.selectedPart.partDrgFile;
+
       console.log(this.partEditForm);
     }    
   }
@@ -81,6 +94,9 @@ export class PartEditComponent implements OnInit {
 
 
   onSubmit(): void {
+    this.apiError = false;
+    this.apiMessage = '';
+
     this.submitted = true;
     if (this.partEditForm.valid) {
       console.log('form valid!');
@@ -88,9 +104,45 @@ export class PartEditComponent implements OnInit {
       this.partModel.partCode = this.partEditForm.value["partCode"];
       this.partModel.partName = this.partEditForm.value["partName"];
       this.partModel.partDesc = this.partEditForm.value["partDesc"];
-      this.partModel.partDrgFile = this.partEditForm.value["partDrgFile"];
+      this.partModel.partDrgFile = this.selectedPartFileName;
       console.log(this.partModel);
 
+
+      this.partEdit.partCode = this.partEditForm.value["partCode"];
+      this.partEdit.partName = this.partEditForm.value["partName"];
+      this.partEdit.partDesc = this.partEditForm.value["partDesc"];
+      this.partEdit.partMasterId = Number(this.partMasterId);
+      this.partEdit.partDetailId = Number(this.partDetailId);
+
+      this.partEdit.partFile = this.currentFile;
+
+      console.log(this.partEdit);
+
+        
+      this.dataService.upload(this.partEdit).subscribe(
+        (event: any) => {
+          if (event.type === HttpEventType.UploadProgress) {
+            this.progress = Math.round(100 * event.loaded / event.total);
+          } else if (event instanceof HttpResponse) {
+            this.apiMessage = event.body.responseMessage;
+            console.log(this.apiMessage);
+            this.apiError = false;
+          }
+        },
+        (err: any) => {
+          this.apiError = true;
+          if (err.status == 400 || err.status == 500) {
+            this.apiMessage = err.error;
+          }
+          else {
+            this.apiMessage = err;
+          }
+          console.log(this.apiMessage);
+        });
+      /*
+      if (this.currentFile) {     
+      }
+      */
     }
     else {
       console.log('form in-valid!');
@@ -100,7 +152,22 @@ export class PartEditComponent implements OnInit {
   goBack(){
     this.router.navigate(['/engineering']);
   }
+
+
+  // part file upload
+  selectFile(event: any): void {
+    if (event.target.files && event.target.files[0]) {
+      const file: File = event.target.files[0];
+      this.currentFile = file;
+      this.fileName = this.currentFile.name;
+    } else {
+      this.fileName = 'Select File';
+    }
+  }
+
+
 }
+
 
 
 // check for duplicate [part-code]
