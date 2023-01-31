@@ -232,5 +232,36 @@ namespace PurchaseOrderAPI.Controllers
             }
         }
 
+        [AcceptVerbs("GET", "POST")]
+        [Route("remoteCheckPartCode")]
+        public IActionResult VerifyPartCodeEditOperation(string PreviousPartCode, string PartCode)
+        {
+
+            if (PartCode == PreviousPartCode)
+                return Ok(new APIResponse()
+                {
+                     ResponseCode = 0,
+                      ResponseMessage = "New Part-Code OK!"
+                });
+
+            var found = _unitOfWork.PartMasters.Find(x => x.PartCode == PartCode);
+            if (found != null && found.Count() > 0)
+            {
+                return Ok(new APIResponse()
+                {
+                    ResponseCode = -1,
+                    ResponseMessage = "This Part-Code is already in use!"
+                });
+            }
+            else
+            {
+                return Ok(new APIResponse()
+                {
+                    ResponseCode = 0,
+                    ResponseMessage = "New Part Code OK!"
+                });
+            }
+        }
+
     }
 }

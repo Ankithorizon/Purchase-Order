@@ -18,3 +18,7 @@
 .file{
     color: blue;
 }
+
+.remotePartCodeCheckError{
+    color: red;
+}

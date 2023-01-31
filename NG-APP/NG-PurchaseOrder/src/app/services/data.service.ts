@@ -29,7 +29,7 @@ export class DataService {
   editPart(selectedPartId: number): Observable<any> {
     return this.http.get<any>(this.EngineeringApi + '/partEdit/' + selectedPartId);
   }
-  // upload part file
+  // upload part file with edited part information
   upload(partEditDto: PartEditDTO): Observable<HttpEvent<any>> {
     const formData: FormData = new FormData();
     // var formData: FormData = new FormData();
@@ -49,5 +49,8 @@ export class DataService {
     });
     return this.http.request(req);
   }
-
+  // remote check for part-code
+  remoteCheckPartCode(currentPartCode: string, newPartCode: string): Observable<any> {
+    return this.http.get<any>(this.EngineeringApi + '/remoteCheckPartCode?previousPartCode=' + currentPartCode + '&partCode='+newPartCode);
+  }
 }

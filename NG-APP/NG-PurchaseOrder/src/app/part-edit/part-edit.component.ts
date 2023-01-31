@@ -15,6 +15,9 @@ import { HttpEventType, HttpResponse } from '@angular/common/http';
 })
 export class PartEditComponent implements OnInit {
 
+  // remote part-code check
+  remotePartCodeCheckResponse = '';
+
   // part file upload
   currentFile?: File;
   progress = 0;
@@ -116,7 +119,7 @@ export class PartEditComponent implements OnInit {
       this.partEdit.partDetailId = Number(this.partDetailId);
       this.partEdit.previousPartCode = this.previousPartCode;
       this.partEdit.previousPartDrgFile = this.previousPartDrgFile;
-      
+
 
       this.partEdit.partFile = this.currentFile;
         
@@ -169,6 +172,27 @@ export class PartEditComponent implements OnInit {
   resetPartFile() {
     this.currentFile = undefined;
     this.fileName = 'Select File';
+  }
+
+  remoteCheckPartCode() {
+    var newPartCode = this.partEditForm.value["partCode"];
+    var currentPartCode = this.previousPartCode;
+
+    console.log(currentPartCode, newPartCode);
+    this.dataService.remoteCheckPartCode(currentPartCode, newPartCode)
+      .subscribe(
+        data => {          
+          console.log(data);    
+          if (data.responseCode < 0) {
+            this.remotePartCodeCheckResponse = data.responseMessage;
+          }   
+          else {
+            this.remotePartCodeCheckResponse = '';
+          }
+        },
+        error => {
+          console.log(error);     
+        });
   }
 }
 

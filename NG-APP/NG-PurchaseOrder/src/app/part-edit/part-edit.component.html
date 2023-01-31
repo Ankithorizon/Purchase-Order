@@ -33,14 +33,20 @@
                             <div class="form-group">
                                 <label>Part Code</label>
                                 <input type="text" 
+                                    (blur)="remoteCheckPartCode()"
                                     formControlName="partCode" 
                                     class="form-control"
                                     [ngClass]="{ 'is-invalid': submitted && f['partCode'].errors }" />
+                                <div *ngIf="remotePartCodeCheckResponse">
+                                    <div class="remotePartCodeCheckError">
+                                        {{remotePartCodeCheckResponse}}
+                                    </div>
+                                </div>
                                 <div *ngIf="submitted && f['partCode'].errors" 
                                     class="invalid-feedback">
                                     <div *ngIf="f['partCode'].errors['required']">
                                         Part Code is required
-                                    </div>
+                                    </div>                                  
                                 </div>                             
                             </div>
                             <p></p>

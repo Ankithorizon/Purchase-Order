@@ -71,11 +71,10 @@ export class EngineeringComponent implements OnInit {
         data => {          
           console.log(data);  
           
-          this.router.navigate(['/part-edit'], { state: { selectedPart: {data} } });
-          
+          this.router.navigate(['/part-edit'], { state: { selectedPart: {data} } });          
         },
         error => {
-          console.log(error);            
+          console.log(error);           
        
         });
   } 
