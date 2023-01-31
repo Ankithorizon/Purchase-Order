@@ -15,6 +15,8 @@ namespace PurchaseOrderAPI.DTO
         public string PartCode { get; set; }
         public string PartName { get; set; }
         public string PartDesc { get; set; }
+        public string PreviousPartDrgFile {get; set; }
+        public string PreviousPartCode { get; set; }
 
     }
 }

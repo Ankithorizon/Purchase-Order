@@ -4,9 +4,16 @@
             <div class="card-header componentHeader">
                 <h4>
                     <div>
-                        #{{partMasterId}}) ##{{partDetailId}} [Part - Edit]
+                        #{{partMasterId}}) ##{{partDetailId}} [Part - Edit]                        
                     </div>
                 </h4>
+                <h6>
+                    <div class="container">
+                        Current Part Code : {{previousPartCode}}
+                        <br />
+                        Current Part File Name : {{previousPartDrgFile}}
+                    </div>
+                </h6>
                 <div *ngIf="apiError" class="apiError">
                     {{apiMessage}}
                 </div>

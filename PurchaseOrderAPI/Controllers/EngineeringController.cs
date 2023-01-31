@@ -116,6 +116,8 @@ namespace PurchaseOrderAPI.Controllers
             {
                 // throw new Exception();
 
+                string PartDrgFile = string.Empty;
+
                 if (partEditDto == null)
                 {                  
                     return BadRequest("Bad Request! Null Object!");
@@ -166,6 +168,8 @@ namespace PurchaseOrderAPI.Controllers
                         var fileName = inRangeValue + "_" + ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
                         var fullPath = Path.Combine(pathToSave, fileName);
 
+                        PartDrgFile = fileName;
+
                         // file-system store
                         using (var stream = new FileStream(fullPath, FileMode.Create))
                         {
@@ -178,15 +182,40 @@ namespace PurchaseOrderAPI.Controllers
                     }
                 }
 
+
                 // db store
                 // 
-
-                return Ok(new APIResponse()
+                try
                 {
-                    ResponseCode = 0,
-                    ResponseMessage = "Part Edited Successfully!"
-                });
-
+                    var partMasterpartDetail = new PartMasterPartDetailsEditVM()
+                    {
+                        PartCode = partEditDto.PartCode,
+                        PartDesc = partEditDto.PartDesc,
+                        PartDetailId = partEditDto.PartDetailId,
+                        PartDrgFile = PartDrgFile,
+                        PartMasterId = partEditDto.PartMasterId,
+                        PartName = partEditDto.PartName,
+                        PreviousPartCode = partEditDto.PreviousPartCode,
+                        PreviousPartDrgFile = partEditDto.PreviousPartDrgFile
+                    };
+                    // sp call
+                    var spResponse = _unitOfWork.PartMasters.SP_EditPartMasterWithPartDetail(partMasterpartDetail);
+                    return Ok(new APIResponse()
+                    {
+                        ResponseCode = 0,
+                        ResponseMessage = spResponse + " : Part Edited Successfully!"
+                    });
+                }
+                catch (IOException ioEx)
+                {
+                    var spResponse = "FAIL : IO EXCEPTION!";
+                    return BadRequest(spResponse);
+                }
+                catch (Exception ex)
+                {
+                    var spResponse = "FAIL : GENERAL EXCEPTION!";
+                    return BadRequest(spResponse);
+                }
             }
             catch (FormatException)
             {              

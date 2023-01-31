@@ -4,5 +4,7 @@ export default class PartEditDTO {
     partCode: string;
     partName: string;
     partDesc: string;
-    partFile: File
+    partFile: File;
+    previousPartDrgFile: string;
+    previousPartCode: string;
 }

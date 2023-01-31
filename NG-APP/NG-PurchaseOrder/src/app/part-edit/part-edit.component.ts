@@ -49,6 +49,8 @@ export class PartEditComponent implements OnInit {
     partDesc: '',
     partDrgFile: '',
   };
+  previousPartDrgFile = '';
+  previousPartCode = '';
 
   constructor(private location: Location,
     private fb: FormBuilder,
@@ -83,6 +85,8 @@ export class PartEditComponent implements OnInit {
                 partDesc: this.selectedPart.partDesc,                
       });
       this.selectedPartFileName = this.selectedPart.partDrgFile;
+      this.previousPartCode = this.selectedPart.partCode;
+      this.previousPartDrgFile = this.selectedPart.partDrgFile;
 
       console.log(this.partEditForm);
     }    
@@ -110,6 +114,9 @@ export class PartEditComponent implements OnInit {
       this.partEdit.partDesc = this.partEditForm.value["partDesc"];
       this.partEdit.partMasterId = Number(this.partMasterId);
       this.partEdit.partDetailId = Number(this.partDetailId);
+      this.partEdit.previousPartCode = this.previousPartCode;
+      this.partEdit.previousPartDrgFile = this.previousPartDrgFile;
+      
 
       this.partEdit.partFile = this.currentFile;
         
