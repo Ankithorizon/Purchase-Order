@@ -76,12 +76,16 @@ export class PartEditComponent implements OnInit {
       this.partDetailId = this.selectedPart.partDetailId;
 
       this.partEditForm = this.fb.group({
-        partCode: ['', Validators.required],
+        partCode: ['',  [
+            Validators.required,
+            Validators.minLength(6),
+            Validators.maxLength(20)
+          ]],
         partName: ['', Validators.required],
         partDesc: ['', Validators.required],
       });
 
-      // path form values
+      // patch form values
       this.partEditForm.setValue({
                 partName: this.selectedPart.partName,
                 partCode: this.selectedPart.partCode,
@@ -195,8 +199,3 @@ export class PartEditComponent implements OnInit {
         });
   }
 }
-
-
-
-// check for duplicate [part-code]
-// maximum 20 characters [part-code]

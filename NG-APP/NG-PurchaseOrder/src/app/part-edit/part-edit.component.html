@@ -46,7 +46,13 @@
                                     class="invalid-feedback">
                                     <div *ngIf="f['partCode'].errors['required']">
                                         Part Code is required
-                                    </div>                                  
+                                    </div>    
+                                    <div *ngIf="f['partCode'].errors['minlength']">
+                                        Part-Code must be at least 6 characters
+                                    </div>
+                                    <div *ngIf="f['partCode'].errors['maxlength']">
+                                        Part-Code must not exceed 20 characters
+                                    </div>
                                 </div>                             
                             </div>
                             <p></p>
