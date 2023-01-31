@@ -137,6 +137,7 @@ namespace PurchaseOrderAPI.Controllers
                 }                
             
                 var file = partEditDto.PartFile;
+                                
                 if (file == null)
                 {
                     // file is not changed/edited                    
@@ -144,47 +145,54 @@ namespace PurchaseOrderAPI.Controllers
                 }                    
                 else
                 {
-                    // file is changed/edited
-                    // check for file type
-                    // .pdf
-                    var ext = Path.GetExtension(file.FileName).ToLowerInvariant();
-                    if (string.IsNullOrEmpty(ext) || !permittedExtensions.Contains(ext))
+                    // @file system store
+                    try
                     {
-                        return BadRequest("Bad Request! Invalid File-Type!");
-                    }
-
-                    string partFileStoragePath = _configuration.GetSection("PartFileUploadLocation").GetSection("Path").Value;
-
-                    // unique random number to edit file name
-                    var guid = Guid.NewGuid();
-                    var bytes = guid.ToByteArray();
-                    var rawValue = BitConverter.ToInt64(bytes, 0);
-                    var inRangeValue = Math.Abs(rawValue) % DateTime.MaxValue.Ticks;
-
-                    var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), partFileStoragePath);
-
-                    if (file.Length > 0)
-                    {
-                        var fileName = inRangeValue + "_" + ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
-                        var fullPath = Path.Combine(pathToSave, fileName);
-
-                        PartDrgFile = fileName;
-
-                        // file-system store
-                        using (var stream = new FileStream(fullPath, FileMode.Create))
+                        // file is changed/edited
+                        // check for file type
+                        // .pdf
+                        var ext = Path.GetExtension(file.FileName).ToLowerInvariant();
+                        if (string.IsNullOrEmpty(ext) || !permittedExtensions.Contains(ext))
                         {
-                            file.CopyTo(stream);
+                            return BadRequest("Bad Request! Invalid File-Type!");
+                        }
+
+                        string partFileStoragePath = _configuration.GetSection("PartFileUploadLocation").GetSection("Path").Value;
+
+                        // unique random number to edit file name
+                        var guid = Guid.NewGuid();
+                        var bytes = guid.ToByteArray();
+                        var rawValue = BitConverter.ToInt64(bytes, 0);
+                        var inRangeValue = Math.Abs(rawValue) % DateTime.MaxValue.Ticks;
+
+                        var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), partFileStoragePath);
+
+                        if (file.Length > 0)
+                        {
+                            var fileName = inRangeValue + "_" + ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                            var fullPath = Path.Combine(pathToSave, fileName);
+
+                            PartDrgFile = fileName;
+
+                            // file-system store
+                            using (var stream = new FileStream(fullPath, FileMode.Create))
+                            {
+                                file.CopyTo(stream);
+                            }
+                        }
+                        else
+                        {
+                            return BadRequest("Nothing To Upload !");
                         }
                     }
-                    else
+                    catch (IOException ioEx)
                     {
-                        return BadRequest("Nothing To Upload !");
+                        return BadRequest("FAIL : IO EXCEPTION!");
                     }
                 }
 
 
-                // db store
-                // 
+                // @db store
                 try
                 {
                     var partMasterpartDetail = new PartMasterPartDetailsEditVM()
@@ -198,6 +206,8 @@ namespace PurchaseOrderAPI.Controllers
                         PreviousPartCode = partEditDto.PreviousPartCode,
                         PreviousPartDrgFile = partEditDto.PreviousPartDrgFile
                     };
+
+                    // throw new Exception();
                     // sp call
                     var spResponse = _unitOfWork.PartMasters.SP_EditPartMasterWithPartDetail(partMasterpartDetail);
                     return Ok(new APIResponse()
@@ -205,12 +215,7 @@ namespace PurchaseOrderAPI.Controllers
                         ResponseCode = 0,
                         ResponseMessage = spResponse + " : Part Edited Successfully!"
                     });
-                }
-                catch (IOException ioEx)
-                {
-                    var spResponse = "FAIL : IO EXCEPTION!";
-                    return BadRequest(spResponse);
-                }
+                }             
                 catch (Exception ex)
                 {
                     var spResponse = "FAIL : GENERAL EXCEPTION!";
