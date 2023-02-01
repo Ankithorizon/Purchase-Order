@@ -109,8 +109,8 @@ namespace PurchaseOrderAPI.Controllers
             }
         }
         [HttpPost, DisableRequestSizeLimit]
-        [Route("upload")]
-        public IActionResult Upload([FromForm] PartEditDTO partEditDto)
+        [Route("partEditPost")]
+        public IActionResult PartEditPost([FromForm] PartEditDTO partEditDto)
         {            
             try
             {
@@ -265,6 +265,138 @@ namespace PurchaseOrderAPI.Controllers
                     ResponseCode = 0,
                     ResponseMessage = "New Part Code OK!"
                 });
+            }
+        }
+
+
+        [HttpPost, DisableRequestSizeLimit]
+        [Route("partCreatePost")]
+        public IActionResult PartCreatePost([FromForm] PartCreateDTO partCreateDto)
+        {
+            try
+            {
+                // throw new Exception();
+
+                string PartDrgFile = string.Empty;
+
+                if (partCreateDto == null)
+                {
+                    return BadRequest("Bad Request! Null Object!");
+                }
+
+                if (partCreateDto.PartCode == null)
+                {
+                    return BadRequest("Bad Request! Null Object!");
+                }
+                if (partCreateDto.PartName == null)
+                {
+                    return BadRequest("Bad Request! Null Object!");
+                }
+                if (partCreateDto.PartDesc == null)
+                {
+                    return BadRequest("Bad Request! Null Object!");
+                }
+
+                var file = partCreateDto.PartFile;
+
+                if (file == null)
+                {                  
+                    return BadRequest("Bad Request! No file content found!");
+                }
+                else
+                {
+                    // @file system store
+                    try
+                    {
+                        // check for file type
+                        // .pdf
+                        var ext = Path.GetExtension(file.FileName).ToLowerInvariant();
+                        if (string.IsNullOrEmpty(ext) || !permittedExtensions.Contains(ext))
+                        {
+                            return BadRequest("Bad Request! Invalid File-Type!");
+                        }
+
+                        string partFileStoragePath = _configuration.GetSection("PartFileUploadLocation").GetSection("Path").Value;
+
+                        // unique random number to edit file name
+                        var guid = Guid.NewGuid();
+                        var bytes = guid.ToByteArray();
+                        var rawValue = BitConverter.ToInt64(bytes, 0);
+                        var inRangeValue = Math.Abs(rawValue) % DateTime.MaxValue.Ticks;
+
+                        // within same solution/project
+                        var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), partFileStoragePath);
+
+                        // outside of current solution
+                        var outsideOfCurrentSolution = Path.Combine(@"C:\\Users\\ankit_2\\source\\repos\\PartTracking", partFileStoragePath);
+
+                        if (file.Length > 0)
+                        {
+                            var fileName = inRangeValue + "_" + ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                            // var fullPath = Path.Combine(pathToSave, fileName);
+                            var fullPath = Path.Combine(outsideOfCurrentSolution, fileName);
+
+                            PartDrgFile = fileName;
+
+                            // file-system store
+                            using (var stream = new FileStream(fullPath, FileMode.Create))
+                            {
+                                file.CopyTo(stream);
+                            }
+                        }
+                        else
+                        {
+                            return BadRequest("Nothing To Upload !");
+                        }
+                    }
+                    catch (IOException ioEx)
+                    {
+                        return BadRequest("FAIL : IO EXCEPTION!");
+                    }
+                }
+
+
+                // @db store
+                try
+                {
+                    // add @ context
+                    // need transaction for PartMaster and PartDetail
+                    // add @ PartMaster and return PartMaster 
+                    // add @ PartDetail using returned PartMaster
+                    // sp covers all above,,,
+                    partCreateDto.PartDrgFile = PartDrgFile;
+
+
+                    var partMasterPartDetailAddVM = new PartMasterPartDetailsAddVM()
+                    {
+                        PartCode = partCreateDto.PartCode,
+                        PartDesc = partCreateDto.PartDesc,
+                        PartDrgFile = PartDrgFile,
+                        PartName = partCreateDto.PartName,
+                    };
+
+                    // throw new Exception();
+                    // sp call
+                    var spResponse = _unitOfWork.PartMasters.SP_AddPartMasterWithPartDetail(partMasterPartDetailAddVM);
+                    return Ok(new APIResponse()
+                    {
+                        ResponseCode = 0,
+                        ResponseMessage = spResponse + " : Part Created Successfully!"
+                    });
+                }
+                catch (Exception ex)
+                {
+                    var spResponse = "FAIL : GENERAL EXCEPTION!";
+                    return BadRequest(spResponse);
+                }
+            }
+            catch (FormatException)
+            {
+                return BadRequest();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Server Error !");
             }
         }
 

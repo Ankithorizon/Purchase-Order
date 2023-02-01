@@ -1,5 +1,6 @@
 <div class="container">
 
+    <!-- view part detail-->
     <!-- modal-->
     <div>
         <ng-template #mymodal let-modal>
@@ -95,12 +96,21 @@
                     <div *ngIf="parts?.length>0; else noParts" 
                         class="container">
 
-                        <div class="form-group">
-                            <input type="text" 
-                                class="searchControl form-control" 
-                                placeholder="Search Part-Code"
-                                [(ngModel)]="term">
-                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <input type="text" class="searchControl form-control" placeholder="Search Part-Code" [(ngModel)]="term">
+                                </div>
+                            </div>
+                            <div class="col-sm-6 createnewPartBtn">
+                                <button type="button" 
+                                    (click)="createNewPart()" 
+                                    class="btn btn-info">
+                                    New Part
+                                </button>
+                            </div>
+                        </div>                    
                         <p></p>
 
                         <table class="table">

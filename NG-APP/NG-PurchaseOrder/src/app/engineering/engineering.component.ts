@@ -65,20 +65,21 @@ export class EngineeringComponent implements OnInit {
       });
   }
 
+  // edit part
   editPart(selectedPart) {
      this.dataService.editPart(Number(selectedPart.partMasterId))
       .subscribe(
         data => {          
-          console.log(data);  
-          
+          console.log(data);            
           this.router.navigate(['/part-edit'], { state: { selectedPart: {data} } });          
         },
         error => {
-          console.log(error);           
+          console.log(error);          
        
         });
   } 
 
+  // view part detail
   // Modal
   open(content, selectedPart) {
     this.dataService.getPartDetails(Number(selectedPart.partMasterId))
@@ -115,5 +116,10 @@ export class EngineeringComponent implements OnInit {
     } else {
       return  `with: ${reason}`;
     }
+  }
+
+  // create new part
+  createNewPart() {
+    
   }
 }

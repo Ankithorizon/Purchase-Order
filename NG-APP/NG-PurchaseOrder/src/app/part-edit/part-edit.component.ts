@@ -128,7 +128,7 @@ export class PartEditComponent implements OnInit {
       this.partEdit.partFile = this.currentFile;
         
       console.log(this.partEdit);
-      this.dataService.upload(this.partEdit).subscribe(
+      this.dataService.partEditPost(this.partEdit).subscribe(
         (event: any) => {
           if (event.type === HttpEventType.UploadProgress) {
             this.progress = Math.round(100 * event.loaded / event.total);

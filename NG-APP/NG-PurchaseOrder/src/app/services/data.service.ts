@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { LocalDataService } from '../services/local-data.service';
 import ResumeUpload from '../models/partEditDTO';
 import PartEditDTO from '../models/partEditDTO';
+import PartCreateDTO from '../models/partCreateDto';
 @Injectable({
   providedIn: 'root'
 })
@@ -29,8 +30,9 @@ export class DataService {
   editPart(selectedPartId: number): Observable<any> {
     return this.http.get<any>(this.EngineeringApi + '/partEdit/' + selectedPartId);
   }
+  // edit part
   // upload part file with edited part information
-  upload(partEditDto: PartEditDTO): Observable<HttpEvent<any>> {
+  partEditPost(partEditDto: PartEditDTO): Observable<HttpEvent<any>> {
     const formData: FormData = new FormData();
     // var formData: FormData = new FormData();
     formData.append('partFile', partEditDto.partFile);
@@ -43,7 +45,7 @@ export class DataService {
     // formData = null;
     
     // formData.append('jobApplicationId', "invalid-object-property");
-    const req = new HttpRequest('POST', `${this.EngineeringApi}/upload`, formData, {
+    const req = new HttpRequest('POST', `${this.EngineeringApi}/partEditPost`, formData, {
       reportProgress: true,
       responseType: 'json'
     });
@@ -52,5 +54,24 @@ export class DataService {
   // remote check for part-code
   remoteCheckPartCode(currentPartCode: string, newPartCode: string): Observable<any> {
     return this.http.get<any>(this.EngineeringApi + '/remoteCheckPartCode?previousPartCode=' + currentPartCode + '&partCode='+newPartCode);
+  }
+
+  // create part
+  // upload part file with new part information
+  partCreatePost(partCreateDto: PartCreateDTO): Observable<HttpEvent<any>> {
+    const formData: FormData = new FormData();
+    // var formData: FormData = new FormData();
+    formData.append('partFile', partCreateDto.partFile);
+    formData.append('partName', partCreateDto.partName);
+    formData.append('partCode', partCreateDto.partCode);
+    formData.append('partDesc', partCreateDto.partDesc);
+    
+    // formData = null;
+   
+    const req = new HttpRequest('POST', `${this.EngineeringApi}/partCreatePost`, formData, {
+      reportProgress: true,
+      responseType: 'json'
+    });
+    return this.http.request(req);
   }
 }

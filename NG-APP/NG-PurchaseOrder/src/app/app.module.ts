@@ -23,6 +23,7 @@ import { HomeComponent } from './home/home.component';
 import { HeaderComponent } from './header/header.component';
 import { EngineeringComponent } from './engineering/engineering.component';
 import { PartEditComponent } from './part-edit/part-edit.component';
+import { PartCreateComponent } from './part-create/part-create.component';
 
 
 @NgModule({
@@ -32,6 +33,7 @@ import { PartEditComponent } from './part-edit/part-edit.component';
     HeaderComponent,
     EngineeringComponent,
     PartEditComponent,
+    PartCreateComponent,
   ],
   imports: [
     BrowserModule,
