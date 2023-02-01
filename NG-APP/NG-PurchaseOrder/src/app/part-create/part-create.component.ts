@@ -29,6 +29,7 @@ export class PartCreateComponent implements OnInit {
   progress = 0;
   apiMessage = '';
   apiError = false;
+  modelErrors = [];
   fileName = 'Select File';
   fileInfos?: Observable<any>;  
   partCreate = new PartCreateDTO();
@@ -82,18 +83,19 @@ export class PartCreateComponent implements OnInit {
   onSubmit(): void {
     this.apiError = false;
     this.apiMessage = '';
+    this.modelErrors = [];
 
     this.submitted = true;
     if (this.partCreateForm.valid) {
 
-      this.partModel.partCode = this.partCreateForm.value["partCode"];
-      this.partModel.partName = this.partCreateForm.value["partName"];
-      this.partModel.partDesc = this.partCreateForm.value["partDesc"];
-      this.partModel.partDrgFile = this.fileName;
-
-      this.partCreate = { ...this.partModel, partFile: this.currentFile };
-        
+      this.partCreate.partCode = this.partCreateForm.value["partCode"];
+      this.partCreate.partName = this.partCreateForm.value["partName"];
+      this.partCreate.partDesc = this.partCreateForm.value["partDesc"];
+      this.partCreate.partDrgFile = this.fileName;
+      this.partCreate.partFile = this.currentFile;
+   
       console.log(this.partCreate);
+
       this.dataService.partCreatePost(this.partCreate).subscribe(
         (event: any) => {
           if (event.type === HttpEventType.UploadProgress) {
@@ -105,8 +107,14 @@ export class PartCreateComponent implements OnInit {
         },
         (err: any) => {
           this.apiError = true;
+          
           if (err.status == 400 || err.status == 500) {
-            this.apiMessage = err.error;
+            if (err.error.errors) {
+              this.modelErrors = this.localDataService.display400andEx(err.error.errors, 'Part-Create');
+            }
+            else {
+              this.apiMessage = err.error;  
+            }            
           }
           else {
             this.apiMessage = err;

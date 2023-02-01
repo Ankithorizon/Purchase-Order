@@ -15,4 +15,19 @@ export class LocalDataService {
   public SetParts(value) {
     this.parts = [...value];
   }
+
+
+  // 400
+  display400andEx(error, componentName): string[] {
+    var errors = [];
+    if (error != null) {
+      for (var key in error) {
+        errors.push(error[key]);
+      }
+    } else {
+      errors.push('[' + componentName + '] Bad Request !');
+    }
+    return errors;
+  }
+
 }

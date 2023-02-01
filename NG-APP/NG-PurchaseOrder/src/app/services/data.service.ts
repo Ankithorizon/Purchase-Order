@@ -38,8 +38,10 @@ export class DataService {
     formData.append('partFile', partEditDto.partFile);
     formData.append('partMasterId', partEditDto.partMasterId.toString());
     formData.append('partDetailId', partEditDto.partDetailId.toString());
+    
+    // model state check @ api
     formData.append('partName', partEditDto.partName);
-    formData.append('partCode', partEditDto.partCode);
+    formData.append('partCode', partEditDto.partCode);    
     formData.append('partDesc', partEditDto.partDesc);
     
     // formData = null;
@@ -62,9 +64,12 @@ export class DataService {
     const formData: FormData = new FormData();
     // var formData: FormData = new FormData();
     formData.append('partFile', partCreateDto.partFile);
+
+    // model state check @ api
     formData.append('partName', partCreateDto.partName);
     formData.append('partCode', partCreateDto.partCode);
     formData.append('partDesc', partCreateDto.partDesc);
+    formData.append('partDrgFile', partCreateDto.partDrgFile);
     
     // formData = null;
    

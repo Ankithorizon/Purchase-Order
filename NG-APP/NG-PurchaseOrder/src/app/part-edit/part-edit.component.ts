@@ -21,6 +21,7 @@ export class PartEditComponent implements OnInit {
   // part file upload
   currentFile?: File;
   progress = 0;
+  modelErrors = [];
   apiMessage = '';
   apiError = false;
   fileName = 'Select File';
@@ -107,6 +108,7 @@ export class PartEditComponent implements OnInit {
   onSubmit(): void {
     this.apiError = false;
     this.apiMessage = '';
+    this.modelErrors = [];
 
     this.submitted = true;
     if (this.partEditForm.valid) {
@@ -140,7 +142,12 @@ export class PartEditComponent implements OnInit {
         (err: any) => {
           this.apiError = true;
           if (err.status == 400 || err.status == 500) {
-            this.apiMessage = err.error;
+            if (err.error.errors) {
+              this.modelErrors = this.localDataService.display400andEx(err.error.errors, 'Part-Create');
+            }
+            else {
+              this.apiMessage = err.error;  
+            }            
           }
           else {
             this.apiMessage = err;
