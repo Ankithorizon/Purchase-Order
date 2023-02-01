@@ -218,9 +218,16 @@ namespace PartTracking.Mvc.Controllers
                             if (formFile.Length > 0)
                             {
                                 var uniqueFileName = GetUniqueFileName(formFile.FileName);
+                                
+                                // within same solution/project
                                 string SavePath = Path.Combine(Directory.GetCurrentDirectory(), "Parts", uniqueFileName);
-                                filePaths.Add(SavePath);
-                                using (var stream = new FileStream(SavePath, FileMode.Create))
+
+                                // outside of current solution
+                                var outsideOfCurrentSolution = Path.Combine(@"C:\\Users\\ankit_2\\source\\repos\\PartTracking", "Files\\PartFiles", uniqueFileName);
+
+                                // filePaths.Add(SavePath);
+                                filePaths.Add(outsideOfCurrentSolution);
+                                using (var stream = new FileStream(outsideOfCurrentSolution, FileMode.Create))
                                 {
                                     await formFile.CopyToAsync(stream);
                                 }

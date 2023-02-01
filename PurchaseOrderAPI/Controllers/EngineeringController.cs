@@ -165,12 +165,17 @@ namespace PurchaseOrderAPI.Controllers
                         var rawValue = BitConverter.ToInt64(bytes, 0);
                         var inRangeValue = Math.Abs(rawValue) % DateTime.MaxValue.Ticks;
 
+                        // within same solution/project
                         var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), partFileStoragePath);
+
+                        // outside of current solution
+                        var outsideOfCurrentSolution = Path.Combine(@"C:\\Users\\ankit_2\\source\\repos\\PartTracking", partFileStoragePath);
 
                         if (file.Length > 0)
                         {
                             var fileName = inRangeValue + "_" + ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
-                            var fullPath = Path.Combine(pathToSave, fileName);
+                            // var fullPath = Path.Combine(pathToSave, fileName);
+                            var fullPath = Path.Combine(outsideOfCurrentSolution, fileName);
 
                             PartDrgFile = fileName;
 
