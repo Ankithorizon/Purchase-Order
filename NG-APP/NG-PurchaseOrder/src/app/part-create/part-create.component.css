@@ -1,3 +1,10 @@
+.mainHeader {
+    text-align: center;
+    color: darkolivegreen;
+    font-size: xx-large;
+    font-weight: bold;
+    margin: 20px;
+}
 .componentHeader {
     background-color: lightyellow;
 }

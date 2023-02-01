@@ -1,3 +1,5 @@
+<div class="mainHeader">Engineering - Part Management</div>
+
 <div class="container">
     <div class="col-md-12 mx-auto">
         <div class="card">
@@ -88,8 +90,13 @@
                                 <div>
                                     <b>{{selectedPartFileName}}</b>                                  
                                 </div>
-                                <div class="container">
-                                    <input class="file" type="file" id="fileInput" (change)="selectFile($event)" name="fileInput" />  
+                                <div>
+                                    <input 
+                                        class="form-control file"  
+                                        type="file" 
+                                        id="fileInput" 
+                                        (change)="selectFile($event)" 
+                                        name="fileInput" />  
                                 </div>
                                 <p></p>
                                 <div class="container">

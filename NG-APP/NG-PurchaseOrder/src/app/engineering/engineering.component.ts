@@ -120,6 +120,6 @@ export class EngineeringComponent implements OnInit {
 
   // create new part
   createNewPart() {
-    
+    this.router.navigate(['/part-create']);
   }
 }
