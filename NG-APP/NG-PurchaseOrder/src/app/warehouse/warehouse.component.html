@@ -27,10 +27,28 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Part</th>
+                                    <th>
+                                        <button type="button" 
+                                            (click)="orderBy('Partname')" 
+                                            class="btn btn-primary">
+                                            Part
+                                        </button>
+                                    </th>
                                     <th>Order QTY</th>
-                                    <th>Order Date</th>
-                                    <th>Order Status</th>
+                                    <th>
+                                        <button type="button" 
+                                            (click)="orderBy('Date')"
+                                            class="btn btn-primary">
+                                            Order Date
+                                        </button>
+                                    </th>
+                                    <th>
+                                        <button type="button" 
+                                            (click)="orderBy('OrderStatus')"
+                                            class="btn btn-primary">
+                                            Order Status
+                                        </button>
+                                    </th>
                                     <th>Ref-Code#</th>
                                 </tr>
                             </thead>

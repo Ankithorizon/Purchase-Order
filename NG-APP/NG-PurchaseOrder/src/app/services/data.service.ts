@@ -88,4 +88,7 @@ export class DataService {
   searchParts(searchString): Observable<Array<any>> {
     return this.http.get<Array<any>>(this.WarehouseApi + '/getWarehouseOrders?searchString='+searchString);
   }
+  searchAndOrderByParts(sortOrder,searchString): Observable<Array<any>> {
+    return this.http.get<Array<any>>(this.WarehouseApi + '/getWarehouseOrders?sortOrder='+sortOrder+'&searchString='+searchString);
+  }
 }
