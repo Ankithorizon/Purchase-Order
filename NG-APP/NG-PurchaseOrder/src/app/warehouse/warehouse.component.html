@@ -1,1 +1,71 @@
-<p>warehouse works!</p>
+<div class="container">
+
+    <div class="mainHeader">Warehouse - Part Management</div>
+
+    <div class="row">
+        <div class="col-md-12 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <div *ngIf="orders?.length>0; else noOrders" 
+                        class="container">
+
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <input type="text" 
+                                        class="searchControl form-control" 
+                                        placeholder="Search Part"
+                                        [(ngModel)]="term">
+                                </div>
+                            </div>                          
+                        </div>
+                        <p></p>
+
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Part</th>
+                                    <th>Order QTY</th>
+                                    <th>Order Date</th>
+                                    <th>Order Status</th>
+                                    <th>Ref-Code#</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let order of orders; let i = index">
+                                    <th scope="row">{{ order.orderMasterId }}</th>
+                                    <td>
+                                        <span>
+                                            {{order.partName }}
+                                            <br />
+                                            <span>
+                                                [{{order.partCode}}]
+                                            </span>
+                                        </span>
+                                    </td>
+                                    <td>{{order.orderQuantity }}</td>
+                                    <td>
+                                        {{order.orderDate | date : "MMM-dd, y"}}
+                                    </td>
+                                    <td class="{{localDataService.getOrderStatusType(order.orderStatus)}}">
+                                        {{localDataService.getOrderStatusType(order.orderStatus)}}
+                                    </td>
+                                    <td>{{order.refCode}}</td>
+                                </tr>
+                            </tbody>
+                        </table>                      
+                    </div>
+                    <ng-template #noOrders>
+                        <div class="container">
+                            <span class="noOrders">
+                                Orders Not Found !
+                            </span>
+                        </div>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

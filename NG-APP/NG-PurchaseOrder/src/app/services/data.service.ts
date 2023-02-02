@@ -83,6 +83,6 @@ export class DataService {
 
   // warehouse
   getWarehouseOrders(): Observable<Array<any>> {
-    return this.http.get<Array<any>>(this.EngineeringApi + '/getWarehouseOrders');
+    return this.http.get<Array<any>>(this.WarehouseApi + '/getWarehouseOrders');
   }
 }

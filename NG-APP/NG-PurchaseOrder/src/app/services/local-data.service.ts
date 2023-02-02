@@ -30,4 +30,17 @@ export class LocalDataService {
     return errors;
   }
 
+  getOrderStatusType(orderStatus) {
+    if (orderStatus == 0)
+      return 'Confirmed';
+    if (orderStatus == 1)
+      return 'Received';
+    if (orderStatus == 2)
+      return 'Cancelled';
+    if (orderStatus == 3)
+      return 'Received_WIP';
+    else
+      return "N/A";
+  }
+
 }

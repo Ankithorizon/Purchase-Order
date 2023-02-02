@@ -29,6 +29,7 @@ export class WarehouseComponent implements OnInit {
       .subscribe(
         data => {          
           console.log(data);
+          this.orders = data;
         },
         error => {
           console.log(error);      

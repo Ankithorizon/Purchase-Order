@@ -60,7 +60,7 @@ namespace PurchaseOrderAPI.Controllers
                             warehouseOrders = warehouseOrdersSearched.OrderBy(s => s.PartName);
                             break;
                     }
-                    return Ok(warehouseOrders.ToList());
+                    return Ok(warehouseOrders.OrderBy(x => x.OrderMasterId).ToList());
                 }
                 else
                 {
@@ -86,7 +86,7 @@ namespace PurchaseOrderAPI.Controllers
                             warehouseOrders = warehouseOrders.OrderBy(s => s.PartName);
                             break;
                     }
-                    return Ok(warehouseOrders.ToList());
+                    return Ok(warehouseOrders.OrderBy(x => x.OrderMasterId).ToList());
                 }
             }
             catch (Exception ex)
