@@ -14,6 +14,7 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <input type="text" 
+                                        (blur)="searchPart()"
                                         class="searchControl form-control" 
                                         placeholder="Search Part"
                                         [(ngModel)]="term">
@@ -62,6 +63,12 @@
                             <span class="noOrders">
                                 Orders Not Found !
                             </span>
+                            <p></p>
+                            <button type="button" 
+                                (click)="reloadOrders()" 
+                                class="btn btn-primary">
+                                Reload-Orders
+                            </button>
                         </div>
                     </ng-template>
                 </div>

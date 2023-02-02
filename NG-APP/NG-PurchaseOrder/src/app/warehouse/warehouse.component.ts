@@ -21,11 +21,12 @@ export class WarehouseComponent implements OnInit {
   constructor(private modalService: NgbModal, public localDataService: LocalDataService, public dataService: DataService, private router: Router) { }
 
   ngOnInit(): void {
-    this.getWarehouseOrders();  
+    this.getWarehouseOrders(null);  
   }
 
-  getWarehouseOrders(){
-    this.dataService.getWarehouseOrders()
+  getWarehouseOrders(searchString) {
+    if (searchString == null) {
+      this.dataService.getWarehouseOrders()
       .subscribe(
         data => {          
           console.log(data);
@@ -34,6 +35,26 @@ export class WarehouseComponent implements OnInit {
         error => {
           console.log(error);      
       });
+    }
+    else {
+      this.dataService.searchParts(searchString)
+      .subscribe(
+        data => {          
+          console.log(data);
+          this.orders = data;
+        },
+        error => {
+          console.log(error);      
+      });
+    }  
   }
 
+  searchPart() {
+    this.getWarehouseOrders(this.term);
+  }
+
+  reloadOrders() {
+    this.getWarehouseOrders(null);  
+    this.term = null;
+  }
 }
