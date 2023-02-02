@@ -54,7 +54,8 @@ export class WarehouseComponent implements OnInit {
     }  
     else {
       console.log(sortOrder, searchString);
-      // searchString = '';
+      if(searchString==undefined)
+        searchString = '';
       this.dataService.searchAndOrderByParts(sortOrder,searchString)
       .subscribe(
         data => {          
