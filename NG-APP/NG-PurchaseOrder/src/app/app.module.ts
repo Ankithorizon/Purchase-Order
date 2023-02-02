@@ -24,6 +24,7 @@ import { HeaderComponent } from './header/header.component';
 import { EngineeringComponent } from './engineering/engineering.component';
 import { PartEditComponent } from './part-edit/part-edit.component';
 import { PartCreateComponent } from './part-create/part-create.component';
+import { WarehouseComponent } from './warehouse/warehouse.component';
 
 
 @NgModule({
@@ -34,6 +35,7 @@ import { PartCreateComponent } from './part-create/part-create.component';
     EngineeringComponent,
     PartEditComponent,
     PartCreateComponent,
+    WarehouseComponent,
   ],
   imports: [
     BrowserModule,

@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LocalDataService } from '../services/local-data.service';
 import { Location } from '@angular/common';
-import PartCreateDTO from '../models/partCreateDto';
+import PartCreateDTO from '../models/partCreateDTO';
 import { HttpEventType, HttpResponse } from '@angular/common/http';
  
 @Component({

@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { LocalDataService } from '../services/local-data.service';
 import ResumeUpload from '../models/partEditDTO';
 import PartEditDTO from '../models/partEditDTO';
-import PartCreateDTO from '../models/partCreateDto';
+import PartCreateDTO from '../models/partCreateDTO';
 @Injectable({
   providedIn: 'root'
 })
@@ -12,6 +12,7 @@ export class DataService {
 
   public PurchaseOrderApi = 'https://localhost:44366/api';
   public EngineeringApi =  `${this.PurchaseOrderApi}/engineering`;
+  public WarehouseApi =  `${this.PurchaseOrderApi}/warehouse`;
   
   constructor(
     private http: HttpClient,
@@ -57,7 +58,6 @@ export class DataService {
   remoteCheckPartCode(currentPartCode: string, newPartCode: string): Observable<any> {
     return this.http.get<any>(this.EngineeringApi + '/remoteCheckPartCode?previousPartCode=' + currentPartCode + '&partCode='+newPartCode);
   }
-
   // create part
   // upload part file with new part information
   partCreatePost(partCreateDto: PartCreateDTO): Observable<HttpEvent<any>> {
@@ -78,5 +78,11 @@ export class DataService {
       responseType: 'json'
     });
     return this.http.request(req);
+  }
+
+
+  // warehouse
+  getWarehouseOrders(): Observable<Array<any>> {
+    return this.http.get<Array<any>>(this.EngineeringApi + '/getWarehouseOrders');
   }
 }
