@@ -14,6 +14,10 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 })
 export class WarehouseComponent implements OnInit {
 
+  closeResult: string = '';
+  orderMasterView;
+
+
   term: string;
   orderBySettings = {
     columnName: '',
@@ -96,5 +100,44 @@ export class WarehouseComponent implements OnInit {
     
     console.log(this.orderByParam);
     this.getWarehouseOrders(this.term, this.orderByParam);
+  }
+
+  // view order detail
+  // Modal
+  open(content, selectedOrder) {
+    this.dataService.getOrderDetails(Number(selectedOrder.orderMasterId))
+      .subscribe(
+        data => {          
+          console.log(data);
+          this.orderMasterView = data;
+
+          this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+            this.closeResult = `Closed with: ${result}`;
+          }, (reason) => {
+            this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+            console.log(this.closeResult);
+          });
+        },
+        error => {
+          // console.log(error);             
+          if (error.status == 400) {
+            this.orderMasterView = null;
+          }
+          this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+            this.closeResult = `Closed with: ${result}`;
+          }, (reason) => {
+            this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+            console.log(this.closeResult);
+          });
+        });
+  }   
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return  `with: ${reason}`;
+    }
   }
 }

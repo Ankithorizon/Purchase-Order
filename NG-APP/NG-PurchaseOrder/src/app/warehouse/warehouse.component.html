@@ -1,5 +1,82 @@
 <div class="container">
 
+    <!-- view order detail-->
+    <!-- modal-->
+    <div>
+        <ng-template #mymodal let-modal>
+            <div>
+                <div class="modal-header">
+                    <h4 class="modal-title" 
+                        id="modal-basic-title">Order-Details</h4>
+                    <button type="button" 
+                        class="close" 
+                        aria-label="Close" 
+                        (click)="modal.dismiss('Cross click')">
+                        <span aria-hidden="true">
+                            ×
+                        </span>
+                    </button>
+                </div>
+                <div *ngIf="orderMasterView" class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <h5>Order Master #</h5>
+                        </div>
+                        <div class="col-sm-7">
+                            {{orderMasterView.orderMasterId}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <h5>Part Master #</h5>
+                        </div>
+                        <div class="col-sm-7">
+                            {{orderMasterView.partMasterId}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <h5>Part Code</h5>
+                        </div>
+                        <div class="col-sm-7">
+                            {{orderMasterView.partCode}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <h5>Part Name</h5>
+                        </div>
+                        <div class="col-sm-7">
+                            {{orderMasterView.partName}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <h5>Quantity</h5>
+                        </div>
+                        <div *ngIf="orderMasterView.orderQuantity" class="col-sm-7 qty">
+                            {{orderMasterView.orderQuantity}}
+                        </div>
+                        <div *ngIf="!orderMasterView.orderQuantity" class="col-sm-7 noQty">
+                            N/A
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="!orderMasterView" 
+                    class="modal-body badRequest">
+                    Bad Request!                
+                </div>
+                <div class="modal-footer">
+                    <button type="button" 
+                        class="btn btn-outline-dark" 
+                        (click)="modal.close('Save click')">
+                        Ok
+                    </button>
+                </div>
+            </div>
+        </ng-template>
+    </div>
+
     <div class="mainHeader">Warehouse - Part Management</div>
 
     <div class="row">
@@ -19,7 +96,8 @@
                                         placeholder="Search Part"
                                         [(ngModel)]="term">
                                 </div>
-                            </div>                          
+                            </div>   
+                            <div class="col-sm-6"></div>
                         </div>
                         <p></p>
 
@@ -50,6 +128,7 @@
                                         </button>
                                     </th>
                                     <th>Ref-Code#</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -72,6 +151,24 @@
                                         {{localDataService.getOrderStatusType(order.orderStatus)}}
                                     </td>
                                     <td>{{order.refCode}}</td>
+                                    <td>
+                                        <div class="row">
+                                            <div class="col-1"></div>
+                                            <div class="col-1">                                               
+                                            </div>
+                                            <div class="col-1"></div>
+                                            <div class="col-1">
+                                                <button type="button" 
+                                                    (click)="open(mymodal, order)" 
+                                                    class="btn btn-success">
+                                                    <i class="bi bi-ticket-detailed"></i>
+                                                </button>
+                                            </div>
+                                            <div class="col-1">
+                                            </div>
+                                            <div class="col-7"></div>
+                                        </div>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>                      

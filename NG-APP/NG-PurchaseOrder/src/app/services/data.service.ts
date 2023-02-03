@@ -91,4 +91,7 @@ export class DataService {
   searchAndOrderByParts(sortOrder,searchString): Observable<Array<any>> {
     return this.http.get<Array<any>>(this.WarehouseApi + '/getWarehouseOrders?sortOrder='+sortOrder+'&searchString='+searchString);
   }
+  getOrderDetails(selectedOrderId: number): Observable<any> {
+    return this.http.get<any>(this.WarehouseApi + '/getOrderDetails/' + selectedOrderId);
+  }
 }
