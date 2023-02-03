@@ -29,10 +29,21 @@
 
 .Confirmed{
     color: green;
+    font-weight: bold;
 }
 .Received{
     color : red;
+    font-weight: bold;
 }
 .Received_WIP{
     color: blue;
+    font-weight: bold;
+}
+
+.orderDetailsStyle {
+    width: 700px;
+    background-color: lightgoldenrodyellow;
+}
+.modal-body{
+    background-color: lightyellow;
 }

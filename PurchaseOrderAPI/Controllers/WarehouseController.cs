@@ -94,5 +94,41 @@ namespace PurchaseOrderAPI.Controllers
                 return BadRequest("Server Error!");
             }
         }
+
+        [HttpGet]
+        [Route("getOrderDetails/{selectedOrderId:int}")]
+        public IActionResult GetOrderDetails(int selectedOrderId)
+        {
+            try
+            {
+                var orderMasterDetail = _unitOfWork.OrderMasters.GetById(selectedOrderId);
+                int partMasterId = orderMasterDetail.PartMasterId;
+                var partMasterDetail = _unitOfWork.PartMasters.Find(x => x.PartMasterId == partMasterId);
+                if (orderMasterDetail != null && partMasterDetail != null && partMasterDetail.Count() == 1)
+                {
+                    OrderMasterView orderMaster = new OrderMasterView()
+                    {
+                        PartMasterId = orderMasterDetail.PartMasterId,
+                        PartCode = partMasterDetail.FirstOrDefault().PartCode,
+                        PartName = partMasterDetail.FirstOrDefault().PartName,
+                        OrderQuantity = orderMasterDetail.OrderQuantity,
+                        OrderDate = orderMasterDetail.OrderDate,
+                        OrderMasterId = orderMasterDetail.OrderMasterId,
+                        OrderStatus = orderMasterDetail.OrderStatus,
+                        RefCode = orderMasterDetail.RefCode
+                    };
+                    return Ok(orderMaster);
+                }
+                else
+                {
+                    return Ok(new OrderMasterView());
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("General Exception!");
+            }
+        }
+
     }
 }

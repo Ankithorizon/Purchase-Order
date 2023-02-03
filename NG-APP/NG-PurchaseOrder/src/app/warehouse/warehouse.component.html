@@ -4,7 +4,7 @@
     <!-- modal-->
     <div>
         <ng-template #mymodal let-modal>
-            <div>
+            <div class="orderDetailsStyle">
                 <div class="modal-header">
                     <h4 class="modal-title" 
                         id="modal-basic-title">Order-Details</h4>
@@ -28,37 +28,42 @@
                     </div>
                     <div class="row">
                         <div class="col-sm-5">
-                            <h5>Part Master #</h5>
+                            <h5>Part </h5>
                         </div>
                         <div class="col-sm-7">
-                            {{orderMasterView.partMasterId}}
+                            {{orderMasterView.partName}} - [{{orderMasterView.partCode}}]
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-5">
-                            <h5>Part Code</h5>
+                            <h5>Order QTY</h5>
                         </div>
                         <div class="col-sm-7">
-                            {{orderMasterView.partCode}}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-5">
-                            <h5>Part Name</h5>
-                        </div>
-                        <div class="col-sm-7">
-                            {{orderMasterView.partName}}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-5">
-                            <h5>Quantity</h5>
-                        </div>
-                        <div *ngIf="orderMasterView.orderQuantity" class="col-sm-7 qty">
                             {{orderMasterView.orderQuantity}}
                         </div>
-                        <div *ngIf="!orderMasterView.orderQuantity" class="col-sm-7 noQty">
-                            N/A
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <h5>Order Date</h5>
+                        </div>
+                        <div class="col-sm-7">
+                            {{orderMasterView.orderDate | date : "MMM-dd, y"}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <h5>Order Status</h5>
+                        </div>
+                        <div class="col-sm-7 {{localDataService.getOrderStatusType(orderMasterView.orderStatus)}}">
+                            {{localDataService.getOrderStatusType(orderMasterView.orderStatus)}}
+                        </div>                     
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <h5>Ref-Code</h5>
+                        </div>
+                        <div class="col-sm-7">
+                            {{orderMasterView.refCode}}
                         </div>
                     </div>
                 </div>
@@ -87,6 +92,7 @@
                         class="container">
 
 
+                        <!-- search order-->
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
@@ -101,6 +107,7 @@
                         </div>
                         <p></p>
 
+                        <!-- display orders @table-->
                         <table class="table">
                             <thead>
                                 <tr>
@@ -173,6 +180,7 @@
                             </tbody>
                         </table>                      
                     </div>
+                    <!-- no orders to display-->
                     <ng-template #noOrders>
                         <div class="container">
                             <span class="noOrders">
