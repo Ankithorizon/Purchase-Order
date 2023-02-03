@@ -130,5 +130,35 @@ namespace PurchaseOrderAPI.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("orderEdit/{selectedOrderId:int}")]
+        public IActionResult OrderEdit(int selectedOrderId)
+        {
+            var orderMasterDetail = _unitOfWork.OrderMasters.Find(x => x.OrderMasterId == selectedOrderId && x.OrderStatus == 0);
+            if (orderMasterDetail != null && orderMasterDetail.Count() == 1)
+            {
+                int partMasterId = orderMasterDetail.FirstOrDefault().PartMasterId;
+                var partMasterDetail = _unitOfWork.PartMasters.Find(x => x.PartMasterId == partMasterId);
+                if (orderMasterDetail != null && partMasterDetail != null && partMasterDetail.Count() == 1)
+                {
+                    var model = new OrderMasterEditVM()
+                    {
+                        OrderMasterId = selectedOrderId,
+                        OrderQuantity = (int)(orderMasterDetail.FirstOrDefault().OrderQuantity),
+                        PartMasterId = partMasterDetail.FirstOrDefault().PartMasterId,
+                        PartMasterSelectList = _unitOfWork.PartMasters.GetPartMasterSelectList()
+                    };
+                    return Ok(model);
+                }
+                else
+                {
+                    return BadRequest("General Exception!");
+                }
+            }
+            else
+            {
+                return BadRequest("Order is already Received!");
+            }
+        }
     }
 }

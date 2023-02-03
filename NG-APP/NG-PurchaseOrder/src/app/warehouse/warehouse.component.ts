@@ -140,4 +140,18 @@ export class WarehouseComponent implements OnInit {
       return  `with: ${reason}`;
     }
   }
+
+
+  // edit order
+  editOrder(selectedOrder) {
+    this.dataService.editOrder(Number(selectedOrder.orderMasterId))
+      .subscribe(
+        data => {          
+          console.log(data);            
+          this.router.navigate(['/order-edit'], { state: { selectedOrder: {data} } });          
+        },
+        error => {
+          console.log(error);       
+        });
+  }
 }
