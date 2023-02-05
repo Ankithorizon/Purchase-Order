@@ -13,10 +13,12 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
+import { ToastrModule } from 'ngx-toastr';
 
 // services
 import { DataService } from './services/data.service';
 import { LocalDataService } from './services/local-data.service';
+import { ToastService } from './services/toast.service';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -26,6 +28,7 @@ import { PartEditComponent } from './part-edit/part-edit.component';
 import { PartCreateComponent } from './part-create/part-create.component';
 import { WarehouseComponent } from './warehouse/warehouse.component';
 import { OrderEditComponent } from './order-edit/order-edit.component';
+
 
 
 @NgModule({
@@ -49,8 +52,14 @@ import { OrderEditComponent } from './order-edit/order-edit.component';
     HttpClientModule,
     NgxPaginationModule,
     Ng2SearchPipeModule,
+    ToastrModule.forRoot({
+      timeOut: 5000, // 5 seconds
+      closeButton: true,
+      progressBar: true,
+    }),
   ],
-  providers: [LocalDataService, DataService],
+  providers: [LocalDataService, DataService, ToastService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

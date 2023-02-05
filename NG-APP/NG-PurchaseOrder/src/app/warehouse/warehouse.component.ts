@@ -7,6 +7,8 @@ import { LocalDataService } from '../services/local-data.service';
 
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
+import { ToastService } from '../services/toast.service';
+
 @Component({
   selector: 'app-warehouse',
   templateUrl: './warehouse.component.html',
@@ -27,7 +29,12 @@ export class WarehouseComponent implements OnInit {
   
   orders: Array<any>;
 
-  constructor(private modalService: NgbModal, public localDataService: LocalDataService, public dataService: DataService, private router: Router) { }
+  constructor(
+    private toastService: ToastService,
+    private modalService: NgbModal,
+    public localDataService: LocalDataService,
+    public dataService: DataService,
+    private router: Router) { }
 
   ngOnInit(): void {
     this.getWarehouseOrders(null, null);  
@@ -151,7 +158,11 @@ export class WarehouseComponent implements OnInit {
           this.router.navigate(['/order-edit'], { state: { selectedOrder: {data} } });          
         },
         error => {
-          console.log(error);       
+          console.log(error);  
+          if (error.status === 400) {
+            // console.log(error.error);
+            this.toastService.showError('Warehouse-Order - Edit ',error.error);
+          }
         });
-  }
+  }  
 }
