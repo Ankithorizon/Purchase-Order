@@ -160,5 +160,35 @@ namespace PurchaseOrderAPI.Controllers
                 return BadRequest("Order is already Received!");
             }
         }
+        [HttpPost]
+        [Route("orderEditPost")]
+        public IActionResult OrderEditPost(OrderMasterEditVM orderMasterEdit)
+        {
+            try
+            {
+                // throw new Exception();
+
+                // ModelState.AddModelError("OrderMasterId", "Order# is required!");
+                // ModelState.AddModelError("PartMasterId", "Part is required!");
+                if (ModelState.IsValid)
+                {
+                    var spResponse = _unitOfWork.OrderMasters.SP_EditOrderMaster(orderMasterEdit);
+                    return Ok(new APIResponse()
+                    {
+                        ResponseCode = 0,
+                        ResponseMessage = spResponse + " : Warehouse - Order Edited Successfully!"
+                    });
+                }
+                else
+                {
+                    return BadRequest(ModelState);
+                }
+            }         
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Server Error !");
+            }
+        }
+
     }
 }

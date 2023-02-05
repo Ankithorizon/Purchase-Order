@@ -94,8 +94,12 @@ export class DataService {
   getOrderDetails(selectedOrderId: number): Observable<any> {
     return this.http.get<any>(this.WarehouseApi + '/getOrderDetails/' + selectedOrderId);
   }
-  // get
+  // get order for edit
   editOrder(selectedOrderId: number): Observable<any> {
     return this.http.get<any>(this.WarehouseApi + '/orderEdit/' + selectedOrderId);
+  }
+  // edit order post
+  editOrderPost(data): Observable<any> {
+    return this.http.post(this.WarehouseApi + '/orderEditPost' , data);
   }
 }

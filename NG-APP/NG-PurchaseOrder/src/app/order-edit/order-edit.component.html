@@ -9,6 +9,18 @@
                         [Warehouse-Order - Edit] &nbsp;&nbsp; # {{selectedOrder.orderMasterId}}
                     </div>
                 </h4>
+                <div *ngIf="apiError" class="apiError">
+                    {{apiMessage}}
+                </div>
+                <div *ngIf="!apiError" class="apiSuccess">
+                    {{apiMessage}}
+                </div>
+                <div *ngIf="modelErrors?.length>0" class="apiError">
+                    <div *ngFor="let me of modelErrors">
+                        <span>* {{me}}</span>
+                        <br />
+                    </div>
+                </div>
             </div>
             <div class="card-body">
                 <form *ngIf="orderEditForm" 

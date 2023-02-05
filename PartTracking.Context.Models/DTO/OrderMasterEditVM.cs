@@ -8,6 +8,7 @@ namespace PartTracking.Context.Models.DTO
 {
     public class OrderMasterEditVM
     {
+        [Required(ErrorMessage = "Order# is Required!")]
         public int OrderMasterId { get; set; }
         [Required(ErrorMessage = "Part is Required!")]
         public int PartMasterId { get; set; }

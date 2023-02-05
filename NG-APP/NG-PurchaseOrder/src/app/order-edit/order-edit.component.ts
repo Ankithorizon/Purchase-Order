@@ -8,6 +8,8 @@ import { Location } from '@angular/common';
 import PartEditDTO from '../models/partEditDTO';
 import { HttpEventType, HttpResponse } from '@angular/common/http';
 
+import { ToastService } from '../services/toast.service';
+
 @Component({
   selector: 'app-order-edit',
   templateUrl: './order-edit.component.html',
@@ -29,8 +31,10 @@ export class OrderEditComponent implements OnInit {
   submitted = false;
   apiMessage = '';
   apiError = false;
+  modelErrors = [];
 
-  constructor(private location: Location,
+  constructor(private toastService: ToastService,
+    private location: Location,
     private fb: FormBuilder,
     private route: ActivatedRoute,
     public localDataService: LocalDataService,
@@ -78,6 +82,7 @@ export class OrderEditComponent implements OnInit {
   onSubmit(): void {  
     this.apiError = false;
     this.apiMessage = '';
+    this.modelErrors = [];
 
     this.submitted = true;
     if (this.orderEditForm.valid) {
@@ -87,6 +92,35 @@ export class OrderEditComponent implements OnInit {
         orderQuantity: Number(this.orderEditForm.value["orderQuantity"])
       };
       console.log(orderMasterEditVM);
+
+
+      this.dataService.editOrderPost(orderMasterEditVM)
+        .subscribe(
+          response => {
+            console.log(response);   
+            this.apiError = false;
+            if(response.responseCode===0)
+              this.toastService.showSuccess('',response.responseMessage);
+          },
+          err => {
+            this.apiError = true;
+            console.log(err);
+            if (err.status === 400) {
+              if (err.error) {
+                this.modelErrors = this.localDataService.display400andEx(err.error, 'Warehouse-Order-Edit');
+              }
+              else {
+                this.apiMessage = '400 : Error !';  
+              }            
+            }
+            else if(err.status===500) {
+              this.apiMessage = err.error;
+            }
+            else {
+              this.apiMessage = 'Error!';
+            }
+          }
+      );
     }
     else {
       console.log('form in-valid!');
