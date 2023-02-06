@@ -28,6 +28,7 @@ import { PartEditComponent } from './part-edit/part-edit.component';
 import { PartCreateComponent } from './part-create/part-create.component';
 import { WarehouseComponent } from './warehouse/warehouse.component';
 import { OrderEditComponent } from './order-edit/order-edit.component';
+import { OrderCreateComponent } from './order-create/order-create.component';
 
 
 
@@ -41,6 +42,7 @@ import { OrderEditComponent } from './order-edit/order-edit.component';
     PartCreateComponent,
     WarehouseComponent,
     OrderEditComponent,
+    OrderCreateComponent,
   ],
   imports: [
     BrowserModule,

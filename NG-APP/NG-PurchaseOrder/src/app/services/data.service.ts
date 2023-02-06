@@ -102,4 +102,12 @@ export class DataService {
   editOrderPost(data): Observable<any> {
     return this.http.post(this.WarehouseApi + '/orderEditPost' , data);
   }
+  // get part-master list
+  getPartMasterList(): Observable<Array<any>> {
+    return this.http.get<Array<any>>(this.WarehouseApi + '/getPartMasterList');
+  }
+  // create order
+  createOrder(data): Observable<any> {
+    return this.http.post(this.WarehouseApi + '/orderCreate' , data);
+  }
 }

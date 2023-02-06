@@ -47,3 +47,7 @@
 .modal-body{
     background-color: lightyellow;
 }
+
+.createnewOrderBtn {
+    text-align: right;
+}

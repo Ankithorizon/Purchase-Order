@@ -190,5 +190,20 @@ namespace PurchaseOrderAPI.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("getPartMasterList")]
+        public IActionResult GetPartMasterList()
+        {
+            try
+            {
+                var partMasterList = _unitOfWork.PartMasters.GetPartMasterSelectList();
+                return Ok(partMasterList);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Server Error!");
+            }
+        }
+
     }
 }

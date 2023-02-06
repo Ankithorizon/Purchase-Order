@@ -165,4 +165,8 @@ export class WarehouseComponent implements OnInit {
           }
         });
   }  
+
+  createNewOrder() {
+    this.router.navigate(['/order-create']);
+  }
 }

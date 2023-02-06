@@ -8,6 +8,7 @@ import { PartEditComponent } from './part-edit/part-edit.component';
 import { PartCreateComponent } from './part-create/part-create.component';
 import { WarehouseComponent } from './warehouse/warehouse.component';
 import { OrderEditComponent } from './order-edit/order-edit.component';
+import { OrderCreateComponent } from './order-create/order-create.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -17,6 +18,7 @@ const routes: Routes = [
   { path: 'part-create', component: PartCreateComponent },
   { path: 'warehouse', component: WarehouseComponent },
   { path: 'order-edit', component: OrderEditComponent },
+  { path: 'order-create', component: OrderCreateComponent },
   { path: '**', redirectTo: '/home', pathMatch: 'full' }
 ];
 
