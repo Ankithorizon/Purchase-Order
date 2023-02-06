@@ -45,6 +45,8 @@ export class OrderEditComponent implements OnInit {
   ngOnInit(): void {
     this.myState = this.location.getState();
 
+    console.log(this.myState);
+
     if (this.myState.selectedOrder == null || this.myState.selectedOrder==undefined)
       this.router.navigate(['/warehouse']);
     else {
@@ -75,7 +77,14 @@ export class OrderEditComponent implements OnInit {
     }    
   }
 
-    
+  reset() {
+    console.log('in the reset');
+    this.orderEditForm.reset();
+    this.submitted = false;
+
+    // disable browser back button
+    history.pushState(null, '');
+  }  
   goBack(){
     this.router.navigate(['/warehouse']);
   }
@@ -99,8 +108,11 @@ export class OrderEditComponent implements OnInit {
           response => {
             console.log(response);   
             this.apiError = false;
-            if(response.responseCode===0)
-              this.toastService.showSuccess('',response.responseMessage);
+            this.reset();              
+            if (response.responseCode === 0) {
+              this.toastService.showSuccess('', response.responseMessage);              
+              this.router.navigate(['/warehouse']);
+            }
           },
           err => {
             this.apiError = true;
