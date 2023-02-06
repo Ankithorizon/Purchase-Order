@@ -1,0 +1,111 @@
+﻿USE [PartMgt]
+GO
+/****** Object:  StoredProcedure [dbo].[EditPartMasterWithPartDetail]    Script Date: 2023-02-06 11:01:30 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+ALTER PROCEDURE [dbo].[EditPartMasterWithPartDetail]
+      @PartCode varchar(100),
+      @PartName varchar(100),
+	  @PartDesc varchar(1000),
+      @PartDrgFile varchar(100),
+	  @PartMasterId int,
+	  @PartDetailId int,
+	  @retCode int output
+AS
+BEGIN
+       
+       -- SET NOCOUNT ON;
+
+       BEGIN TRAN
+              BEGIN TRY
+                     -- edit PartMaster
+						  update PartMaster 
+						  set PartCode = @PartCode, PartName = @PartName
+						  where PartMasterId=@PartMasterId				
+								
+						  
+
+					 -- edit PartDetail
+						 update PartDetail
+						 set PartDesc = @PartDesc, PartDrgFile = @PartDrgFile
+						 where PartDetailId=@PartDetailId
+					
+                     
+				-- if not error, commit the transcation
+				COMMIT TRANSACTION
+				SET @retCode = 0
+				return @retCode
+			 END TRY
+		     BEGIN CATCH
+				  -- if error, roll back any chanegs done by any of the sql statements
+				  ROLLBACK TRANSACTION
+				  THROW;
+				  SET @retCode = -1
+				  return @retCode
+		     END CATCH
+END
+
+
+-- partcode is unique
+-- PartCode_unique
+-- constraint
+DECLARE @retCode INT
+exec EditPartMasterWithPartDetail 'Cup-Japan-HA1010', 'Screw-Hex-Top-16TH', 'Screw-Hexagon-Top-16-Thread Teeth',null, 13,11, @retCode OUTPUT
+select @retCode
+
+
+------------------------------------------------------------------------
+
+
+
+USE [PartMgt]
+GO
+/****** Object:  StoredProcedure [dbo].[AddPartMasterWithPartDetail]    Script Date: 2023-02-06 12:23:25 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+ALTER PROCEDURE [dbo].[AddPartMasterWithPartDetail]
+      @PartCode varchar(100),
+      @PartName varchar(100),
+	  @PartDesc varchar(1000),
+      @PartDrgFile varchar(100),
+	  @id int output
+AS
+BEGIN
+       -- SET NOCOUNT ON added to prevent extra result sets from
+       -- interfering with SELECT statements.
+       SET NOCOUNT ON;
+
+       BEGIN TRAN
+              BEGIN TRY
+                     -- Insert into PartMaster table first
+                     -- Add PartMaster
+						  INSERT INTO  PartMaster (PartCode, PartName)
+						  VALUES (@PartCode, @PartName)
+						  SET @id=SCOPE_IDENTITY()
+
+					 -- check for exception
+					 -- set @id = @id+1
+
+					 -- Add PartDetail
+						 insert into PartDetail values (@id, @PartDesc, @PartDrgFile)
+                     
+				-- if not error, commit the transcation
+				COMMIT TRANSACTION
+				return @id
+			 END TRY
+		     BEGIN CATCH
+				  -- if error, roll back any chanegs done by any of the sql statements
+				  ROLLBACK TRANSACTION
+				  set @id = -1
+		     END CATCH
+END
+
+
+---------------------------------------------------------------------
+

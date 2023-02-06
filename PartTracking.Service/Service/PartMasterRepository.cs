@@ -87,7 +87,7 @@ namespace PartTracking.Service.Service
             }
             catch(Exception ex)
             {
-                return "FAIL!... STORED PROCEDURE ERROR!";
+                return "Exception!... STORED PROCEDURE ERROR!";
             }        
         }
     }

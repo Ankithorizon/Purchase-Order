@@ -15,6 +15,9 @@ import { HttpEventType, HttpResponse } from '@angular/common/http';
 })
 export class PartCreateComponent implements OnInit {
 
+  // remote part-code check
+  remotePartCodeCheckResponse = '';
+  
   partCreateForm: FormGroup;
   submitted = false;
   partModel = { 
@@ -77,8 +80,22 @@ export class PartCreateComponent implements OnInit {
 
   remoteCheckPartCode() {
     var newPartCode = this.partCreateForm.value["partCode"];
-    
+    this.dataService.remoteCheckPartCode(null, newPartCode)
+      .subscribe(
+        data => {          
+          console.log(data);    
+          if (data.responseCode < 0) {
+            this.remotePartCodeCheckResponse = data.responseMessage;
+          }   
+          else {
+            this.remotePartCodeCheckResponse = '';
+          }
+        },
+        error => {
+          console.log(error);     
+        });
   }
+  
 
   onSubmit(): void {
     this.apiError = false;

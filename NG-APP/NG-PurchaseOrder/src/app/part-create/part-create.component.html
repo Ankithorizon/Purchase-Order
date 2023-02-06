@@ -39,6 +39,11 @@
                                     formControlName="partCode"
                                     class="form-control"
                                     [ngClass]="{ 'is-invalid': submitted && f['partCode'].errors }" />                           
+                                <div *ngIf="remotePartCodeCheckResponse">
+                                    <div class="remotePartCodeCheckError">
+                                        {{remotePartCodeCheckResponse}}
+                                    </div>
+                                </div>
                                 <div *ngIf="submitted && f['partCode'].errors" 
                                     class="invalid-feedback">
                                     <div *ngIf="f['partCode'].errors['required']">

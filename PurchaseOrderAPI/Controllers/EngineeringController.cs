@@ -139,6 +139,7 @@ namespace PurchaseOrderAPI.Controllers
                         return BadRequest("Bad Request! Null Object!");
                     }
 
+
                     var file = partEditDto.PartFile;
 
                     if (file == null)
@@ -217,12 +218,24 @@ namespace PurchaseOrderAPI.Controllers
 
                         // throw new Exception();
                         // sp call
+                        // sp will check for unique part-code and returns -1
+                        // if part-code is duplicate
+                        // partcode is unique
+                        // PartCode_unique constraint @ db
                         var spResponse = _unitOfWork.PartMasters.SP_EditPartMasterWithPartDetail(partMasterpartDetail);
-                        return Ok(new APIResponse()
+                        if(spResponse== "SUCCESS!")
                         {
-                            ResponseCode = 0,
-                            ResponseMessage = spResponse + " : Part Edited Successfully!"
-                        });
+                            return Ok(new APIResponse()
+                            {
+                                ResponseCode = 0,
+                                ResponseMessage = spResponse + " : Part Edited Successfully!"
+                            });
+                        }
+                        else
+                        {
+                            return BadRequest(spResponse);
+                        }
+                     
                     }
                     catch (Exception ex)
                     {
@@ -249,31 +262,55 @@ namespace PurchaseOrderAPI.Controllers
         [Route("remoteCheckPartCode")]
         public IActionResult VerifyPartCodeEditOperation(string PreviousPartCode, string PartCode)
         {
-
-            if (PartCode == PreviousPartCode)
-                return Ok(new APIResponse()
-                {
-                     ResponseCode = 0,
-                      ResponseMessage = "New Part-Code OK!"
-                });
-
-            var found = _unitOfWork.PartMasters.Find(x => x.PartCode == PartCode);
-            if (found != null && found.Count() > 0)
+            // create part
+            if (PreviousPartCode == null)
             {
-                return Ok(new APIResponse()
+                var found = _unitOfWork.PartMasters.Find(x => x.PartCode == PartCode);
+                if (found != null && found.Count() > 0)
                 {
-                    ResponseCode = -1,
-                    ResponseMessage = "This Part-Code is already in use!"
-                });
+                    return Ok(new APIResponse()
+                    {
+                        ResponseCode = -1,
+                        ResponseMessage = "This Part-Code is already in use!"
+                    });
+                }
+                else
+                {
+                    return Ok(new APIResponse()
+                    {
+                        ResponseCode = 0,
+                        ResponseMessage = "New Part Code OK!"
+                    });
+                }
             }
+            // edit part
             else
             {
-                return Ok(new APIResponse()
+                if (PartCode == PreviousPartCode)
+                    return Ok(new APIResponse()
+                    {
+                        ResponseCode = 0,
+                        ResponseMessage = "New Part-Code OK!"
+                    });
+
+                var found = _unitOfWork.PartMasters.Find(x => x.PartCode == PartCode);
+                if (found != null && found.Count() > 0)
                 {
-                    ResponseCode = 0,
-                    ResponseMessage = "New Part Code OK!"
-                });
-            }
+                    return Ok(new APIResponse()
+                    {
+                        ResponseCode = -1,
+                        ResponseMessage = "This Part-Code is already in use!"
+                    });
+                }
+                else
+                {
+                    return Ok(new APIResponse()
+                    {
+                        ResponseCode = 0,
+                        ResponseMessage = "New Part Code OK!"
+                    });
+                }
+            }         
         }
 
 
@@ -390,11 +427,18 @@ namespace PurchaseOrderAPI.Controllers
                         // throw new Exception();
                         // sp call
                         var spResponse = _unitOfWork.PartMasters.SP_AddPartMasterWithPartDetail(partMasterPartDetailAddVM);
-                        return Ok(new APIResponse()
+                        if(spResponse== "SUCCESS!")
                         {
-                            ResponseCode = 0,
-                            ResponseMessage = spResponse + " : Part Created Successfully!"
-                        });
+                            return Ok(new APIResponse()
+                            {
+                                ResponseCode = 0,
+                                ResponseMessage = spResponse + " : Part Created Successfully!"
+                            });
+                        }
+                        else
+                        {
+                            return BadRequest(spResponse);
+                        }                    
                     }
                     catch (Exception ex)
                     {

@@ -10,4 +10,3 @@ C:\Users\ankit_2\source\repos\PartTracking\PartTracking.Context.Models\obj\Debug
 C:\Users\ankit_2\source\repos\PartTracking\PartTracking.Context.Models\obj\Debug\netcoreapp3.1\PartTracking.Context.Models.pdb
 C:\Users\ankit_2\source\repos\PartTracking\PartTracking.Context.Models\obj\Debug\netcoreapp3.1\PartTracking.Context.Models.genruntimeconfig.cache
 C:\Users\ankit_2\source\repos\PartTracking\PartTracking.Context.Models\obj\Debug\netcoreapp3.1\PartTracking.Context.Models.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\ankit_2\source\repos\PartTracking\PartTracking.Context.Models\obj\Debug\netcoreapp3.1\PartTracking.Context.Models.csproj.AssemblyReference.cache
