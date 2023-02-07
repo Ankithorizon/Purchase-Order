@@ -47,16 +47,47 @@
                         class="container">
 
 
+                        <!-- search receiving order-->
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <input type="text" 
+                                        (blur)="searchReceivedOrder()"
+                                        class="searchControl form-control" 
+                                        placeholder="Search Received Order"
+                                        [(ngModel)]="term">
+                                </div>
+                            </div>   
+                            <div class="col-sm-6 receiveBtn">
+                                <div class="col-sm-6">
+                                    <button type="button" 
+                                        (click)="receiveOrderNow()" 
+                                        class="btn btn-info">
+                                        Receive Order Now
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <p></p>
                      
 
                         <!-- display r-orders @table-->
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th>#</th>
+                                    <th>Receive #</th>
                                     <th>
                                       Part
-                                    </th>                                  
+                                    </th>   
+                                    <th>
+                                        R-QTY
+                                    </th>
+                                    <th>O-QTY</th> 
+                                    <th>R-Date</th> 
+                                    <th>O-Date</th>       
+                                    <th>Status</th>     
+                                    <th>REF</th>   
+                                    <th></th>              
                                 </tr>
                             </thead>
                             <tbody>
@@ -64,6 +95,30 @@
                                     <th scope="row">{{ rorder.receivePartId }}</th>
                                     <td>
                                         {{rorder.part}}
+                                    </td>
+                                    <td>
+                                        {{rorder.receiveQuantity}}
+                                    </td>
+                                    <td>
+                                        {{rorder.orderQuantity}}
+                                    </td>
+                                    <td>
+                                        {{rorder.receiveDate | date : "MMM-dd, y"}}
+                                    </td>
+                                    <td>
+                                        {{rorder.orderDate | date : "MMM-dd, y"}}
+                                    </td>
+                                    <td class="{{localDataService.getOrderStatusType(rorder.orderStatus)}}">
+                                        <span>
+                                            {{localDataService.getOrderStatusType(rorder.orderStatus)}}
+                                        </span>
+                                        <br />
+                                        <span>
+                                            {{rorder.receiveQuantity}} / {{rorder.orderQuantity}}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        {{rorder.refCode}}
                                     </td>
                                 </tr>
                             </tbody>

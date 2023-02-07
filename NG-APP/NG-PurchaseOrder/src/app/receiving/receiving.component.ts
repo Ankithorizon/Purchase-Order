@@ -51,7 +51,15 @@ export class ReceivingComponent implements OnInit {
       });
     }
     else if(searchString!=null && sortOrder==null) {
-  
+      this.dataService.searchReceivedOrders(searchString)
+      .subscribe(
+        data => {          
+          console.log(data);
+          this.rOrders = data;
+        },
+        error => {
+          console.log(error);      
+      });
     }  
     else {
    
@@ -82,5 +90,12 @@ export class ReceivingComponent implements OnInit {
   reloadReceivedOrders() {
     this.getReceivedOrders(null, null);  
     this.term = null;
+  }
+
+  receiveOrderNow() {
+    this.router.navigate(['/receiving-order']);
+  }
+  searchReceivedOrder() {
+     this.getReceivedOrders(this.term, null);
   }
 }

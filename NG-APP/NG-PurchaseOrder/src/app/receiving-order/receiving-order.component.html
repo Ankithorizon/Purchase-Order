@@ -1,0 +1,95 @@
+<div class="mainHeader">Receiving - Part Management</div>
+
+<div class="container">
+    <div class="col-md-12 mx-auto">
+        <div class="card">
+            <div class="card-header componentHeader">
+                <h4>
+                    <div>
+                        [Receiving-Order]
+                    </div>
+                </h4>
+                <div *ngIf="apiError" class="apiError">
+                    {{apiMessage}}
+                </div>
+                <div *ngIf="!apiError && apiMessage">
+                    <div class="row">
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-8 orderReceiveSuccess">
+                            {{apiMessage}}
+                        </div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                </div>
+                <div *ngIf="modelErrors?.length>0" class="apiError">
+                    <div *ngFor="let me of modelErrors">
+                        <span>* {{me}}</span>
+                        <br />
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <form *ngIf="orderReceiveForm" 
+                    class="form-orderReceive" 
+                    [formGroup]="orderReceiveForm"
+                    (ngSubmit)="onSubmit()">
+
+                    <div class="row">
+                        <div class="col-md-3 mx-auto"></div>
+                        <div class="col-md-6 mx-auto">
+                            <div class="form-group">
+                                <label>REF-CODE</label>
+                                <input type="text" 
+                                    formControlName="refCode" 
+                                    class="form-control"
+                                    [ngClass]="{ 'is-invalid': submitted && f['refCode'].errors }" />
+                                <div *ngIf="submitted && f['refCode'].errors" 
+                                    class="invalid-feedback">
+                                    <div *ngIf="f['refCode'].errors['required']">
+                                        REF-CODE is required
+                                    </div>
+                                </div>
+                            </div>
+                            <p></p>
+                            <div class="form-group">
+                                <label>Receiving QTY</label>
+                                <input type="text" 
+                                    formControlName="receiveQuantity" 
+                                    class="form-control"
+                                    [ngClass]="{ 'is-invalid': submitted && f['receiveQuantity'].errors }" />
+                                <div *ngIf="submitted && f['receiveQuantity'].errors" 
+                                    class="invalid-feedback">
+                                    <div *ngIf="f['receiveQuantity'].errors['required']">
+                                        Receiving QTY is required
+                                    </div>
+                                    <div *ngIf="f['receiveQuantity'].errors['pattern']">
+                                        Invalid Receiving QTY
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mx-auto"></div>
+                    </div>
+                    <hr />
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <button type="submit" 
+                                    class="btn btn-success">
+                                    Receive Order
+                                </button>
+                            </div>
+                            <div class="col-sm-6">
+                                <button type="button" 
+                                    (click)="goBack()" 
+                                    class="btn btn-primary cancelBtn">
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

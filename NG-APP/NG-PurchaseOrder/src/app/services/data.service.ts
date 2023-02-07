@@ -116,4 +116,7 @@ export class DataService {
   getReceivedOrders(): Observable<Array<any>> {
     return this.http.get<Array<any>>(this.ReceivingApi + '/getReceivedOrders');
   }
+  searchReceivedOrders(searchString): Observable<Array<any>> {
+    return this.http.get<Array<any>>(this.ReceivingApi + '/getReceivedOrders?searchString='+searchString);
+  }
 }

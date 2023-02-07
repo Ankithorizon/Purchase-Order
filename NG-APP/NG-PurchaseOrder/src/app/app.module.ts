@@ -30,6 +30,7 @@ import { WarehouseComponent } from './warehouse/warehouse.component';
 import { OrderEditComponent } from './order-edit/order-edit.component';
 import { OrderCreateComponent } from './order-create/order-create.component';
 import { ReceivingComponent } from './receiving/receiving.component';
+import { ReceivingOrderComponent } from './receiving-order/receiving-order.component';
 
 
 
@@ -45,6 +46,7 @@ import { ReceivingComponent } from './receiving/receiving.component';
     OrderEditComponent,
     OrderCreateComponent,
     ReceivingComponent,
+    ReceivingOrderComponent,
   ],
   imports: [
     BrowserModule,

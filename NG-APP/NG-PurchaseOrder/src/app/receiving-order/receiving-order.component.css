@@ -1,0 +1,34 @@
+.mainHeader {
+    text-align: center;
+    color: darkolivegreen;
+    font-size: xx-large;
+    font-weight: bold;
+    margin: 20px;
+}
+
+.componentHeader {
+    background-color: lightyellow;
+}
+
+.cancelBtn {
+    float: right;
+}
+
+.apiError {
+    color: red;
+    font-size: large;
+}
+
+.apiSuccess {
+    color: green;
+    font-size: large;
+}
+
+.orderReceiveSuccess {
+    background-color: black;
+    color: white;
+    font-size: large;
+    font-weight: bold;
+    padding: 20px;
+    text-align: center;
+}

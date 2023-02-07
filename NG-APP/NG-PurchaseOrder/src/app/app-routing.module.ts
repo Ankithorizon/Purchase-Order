@@ -10,6 +10,7 @@ import { WarehouseComponent } from './warehouse/warehouse.component';
 import { OrderEditComponent } from './order-edit/order-edit.component';
 import { OrderCreateComponent } from './order-create/order-create.component';
 import { ReceivingComponent } from './receiving/receiving.component';
+import { ReceivingOrderComponent } from './receiving-order/receiving-order.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -21,6 +22,7 @@ const routes: Routes = [
   { path: 'order-edit', component: OrderEditComponent },
   { path: 'order-create', component: OrderCreateComponent },
   { path: 'receiving', component: ReceivingComponent },
+  { path: 'receiving-order', component: ReceivingOrderComponent },
   { path: '**', redirectTo: '/home', pathMatch: 'full' }
 ];
 
