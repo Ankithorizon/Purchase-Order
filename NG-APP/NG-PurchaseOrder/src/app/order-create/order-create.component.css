@@ -23,3 +23,15 @@
     color: green;
     font-size: large;
 }
+
+.partMasterIdReq{
+    color : red;
+}
+.orderCreateSuccess{
+    background-color: black;
+    color:white;
+    font-size: large;
+    font-weight: bold;
+    padding: 20px;
+    text-align: center;
+}

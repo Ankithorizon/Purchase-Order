@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using PartTracking.Context.Models.DTO;
+using PartTracking.Context.Models.Models;
 using PartTracking.Service.UOfW;
+using PartTracking.Service.Utility;
 using PurchaseOrderAPI.DTO;
 using System;
 using System.Collections.Generic;
@@ -10,6 +12,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace PurchaseOrderAPI.Controllers
 {
@@ -204,6 +207,45 @@ namespace PurchaseOrderAPI.Controllers
                 return BadRequest("Server Error!");
             }
         }
+        [HttpPost]
+        [Route("orderCreate")]
+        public IActionResult OrderCreate(OrderMaster orderMaster)
+        {
+            try
+            {
+                // throw new Exception();
+                // throw new DbUpdateException();
+
+                // ModelState.AddModelError("PartMasterId", "Part is required!");
+
+                if (ModelState.IsValid)
+                {
+                    orderMaster.OrderDate = DateTime.Now;
+                    orderMaster.RefCode = RefCodeGenerator.RandomString(6);
+                    orderMaster.OrderStatus = (int?)OrderStatusType.Confirmed;
+
+                    orderMaster = _unitOfWork.OrderMasters.AddAndReturn(orderMaster);
+                    return Ok(new APIResponse()
+                    {
+                        ResponseCode = 0,
+                        ResponseMessage = orderMaster.RefCode
+                    });
+                }
+                else
+                {
+                    return BadRequest(ModelState);
+                }
+            }
+            catch (DbUpdateException dbUpdateEx)
+            {
+                return StatusCode(500, "Database Exception !");
+            }          
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Server Error !");
+            }
+        }
+
 
     }
 }

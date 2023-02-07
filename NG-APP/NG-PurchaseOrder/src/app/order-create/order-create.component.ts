@@ -41,7 +41,7 @@ export class OrderCreateComponent implements OnInit {
       partMasterId: ['', [
         Validators.required,
       ]],
-      orderQuantity: ['', [Validators.pattern("^[0-9]*$")]],
+      orderQuantity: ['', [Validators.required,Validators.pattern("^[0-9]*$")]],
     });
   }
   
@@ -97,10 +97,33 @@ export class OrderCreateComponent implements OnInit {
         .subscribe(
           response => {
             console.log(response);   
-        
+            if(response.responseCode===0)
+              this.apiMessage = 'Order Created Successfully ! Confirmation : #' + response.responseMessage;
+            
+         
+            setTimeout(() => {
+              this.apiMessage = '';
+              this.reset();
+            }, 3000);  
           },
           err => {         
-            console.log(err);          
+            console.log(err);     
+            this.apiError = true;
+         
+            if (err.status === 400) {
+              if (err.error) {
+                this.modelErrors = this.localDataService.display400andEx(err.error, 'Warehouse-Order-Create');
+              }
+              else {
+                this.apiMessage = '400 : Error !';  
+              }            
+            }
+            else if(err.status===500) {
+              this.apiMessage = err.error;
+            }
+            else {
+              this.apiMessage = 'Error!';
+            }
           }
       );
     }

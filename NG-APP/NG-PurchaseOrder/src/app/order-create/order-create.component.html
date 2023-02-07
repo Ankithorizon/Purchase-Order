@@ -12,8 +12,14 @@
                 <div *ngIf="apiError" class="apiError">
                     {{apiMessage}}
                 </div>
-                <div *ngIf="!apiError" class="apiSuccess">
-                    {{apiMessage}}
+                <div *ngIf="!apiError && apiMessage">
+                    <div class="row">
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-8 orderCreateSuccess">
+                            {{apiMessage}}
+                        </div>
+                        <div class="col-sm-2"></div>
+                    </div>                    
                 </div>
                 <div *ngIf="modelErrors?.length>0" class="apiError">
                     <div *ngFor="let me of modelErrors">
@@ -33,15 +39,14 @@
                         <div class="col-md-6 mx-auto">
                             <div class="form-group">
                                 <label>Part</label>
-                                <select class="form-control" 
-                                    formControlName="partMasterId">
-                                    <option value={{part.value}} 
-                                        *ngFor="let part of parts">
+                                <select class="form-control" formControlName="partMasterId">
+                                    <option value="">Choose Part</option>
+                                    <option value={{part.value}} *ngFor="let part of parts">
                                         {{part.text}}
                                     </option>
-                                </select>
+                                </select>                             
                                 <div *ngIf="submitted && f['partMasterId'].errors" 
-                                    class="invalid-feedback">
+                                    class="error-block partMasterIdReq">
                                     <div *ngIf="f['partMasterId'].errors['required']">
                                         Part is required
                                     </div>
@@ -54,7 +59,8 @@
                                     formControlName="orderQuantity" 
                                     class="form-control"
                                     [ngClass]="{ 'is-invalid': submitted && f['orderQuantity'].errors }" />
-                                <div *ngIf="submitted && f['orderQuantity'].errors" class="invalid-feedback">
+                                <div *ngIf="submitted && f['orderQuantity'].errors" 
+                                    class="invalid-feedback">
                                     <div *ngIf="f['orderQuantity'].errors['required']">
                                         Order QTY is required
                                     </div>
