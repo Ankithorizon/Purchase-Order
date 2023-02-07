@@ -12,7 +12,8 @@ export class DataService {
 
   public PurchaseOrderApi = 'https://localhost:44366/api';
   public EngineeringApi =  `${this.PurchaseOrderApi}/engineering`;
-  public WarehouseApi =  `${this.PurchaseOrderApi}/warehouse`;
+  public WarehouseApi = `${this.PurchaseOrderApi}/warehouse`;
+  public ReceivingApi =  `${this.PurchaseOrderApi}/receiving`;
   
   constructor(
     private http: HttpClient,
@@ -109,5 +110,10 @@ export class DataService {
   // create order
   createOrder(data): Observable<any> {
     return this.http.post(this.WarehouseApi + '/orderCreate' , data);
+  }
+
+  // receiving
+  getReceivedOrders(): Observable<Array<any>> {
+    return this.http.get<Array<any>>(this.ReceivingApi + '/getReceivedOrders');
   }
 }

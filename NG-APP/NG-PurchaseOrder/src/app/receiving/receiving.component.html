@@ -1,0 +1,90 @@
+<div class="container">
+
+    <!-- view order detail-->
+    <!-- modal-->
+    <div>
+        <ng-template #mymodal let-modal>
+            <div class="orderDetailsStyle">
+                <div class="modal-header">
+                    <h4 class="modal-title"
+                        id="modal-basic-title">
+                        Receiving-Order-Details
+                    </h4>
+                    <button type="button" class="close" 
+                        aria-label="Close" 
+                        (click)="modal.dismiss('Cross click')">
+                        <span aria-hidden="true">
+                            ×
+                        </span>
+                    </button>
+                </div>
+                <div *ngIf="receiveOrderView" 
+                    class="modal-body">
+                    Receiving-Order-Details
+                </div>
+                <div *ngIf="!receiveOrderView" 
+                    class="modal-body badRequest">
+                    Bad Request!
+                </div>
+                <div class="modal-footer">
+                    <button type="button" 
+                        class="btn btn-outline-dark" 
+                        (click)="modal.close('Save click')">
+                        Ok
+                    </button>
+                </div>
+            </div>
+        </ng-template>
+    </div>
+
+    <div class="mainHeader">Receiving - Part Management</div>
+
+    <div class="row">
+        <div class="col-md-12 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <div *ngIf="rOrders?.length>0; else noROrders" 
+                        class="container">
+
+
+                     
+
+                        <!-- display r-orders @table-->
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>
+                                      Part
+                                    </th>                                  
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let rorder of rOrders; let i = index">
+                                    <th scope="row">{{ rorder.receivePartId }}</th>
+                                    <td>
+                                        {{rorder.part}}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- no orders to display-->
+                    <ng-template #noROrders>
+                        <div class="container">
+                            <span class="noROrders">
+                                Received Orders Not Found !
+                            </span>
+                            <p></p>
+                            <button type="button" 
+                                (click)="reloadReceivedOrders()" 
+                                class="btn btn-primary">
+                                Reload-Received-Orders
+                            </button>
+                        </div>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

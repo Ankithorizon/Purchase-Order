@@ -9,6 +9,7 @@ import { PartCreateComponent } from './part-create/part-create.component';
 import { WarehouseComponent } from './warehouse/warehouse.component';
 import { OrderEditComponent } from './order-edit/order-edit.component';
 import { OrderCreateComponent } from './order-create/order-create.component';
+import { ReceivingComponent } from './receiving/receiving.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -19,6 +20,7 @@ const routes: Routes = [
   { path: 'warehouse', component: WarehouseComponent },
   { path: 'order-edit', component: OrderEditComponent },
   { path: 'order-create', component: OrderCreateComponent },
+  { path: 'receiving', component: ReceivingComponent },
   { path: '**', redirectTo: '/home', pathMatch: 'full' }
 ];
 

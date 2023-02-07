@@ -1,0 +1,56 @@
+.mainHeader {
+    text-align: center;
+    color: darkolivegreen;
+    font-size: xx-large;
+    font-weight: bold;
+    margin: 20px;
+}
+
+.componentHeader {
+    background-color: lightyellow;
+}
+
+.noROrders {
+    color: red;
+    font-size: x-large;
+}
+
+.searchControl {
+    width: 300px;
+}
+
+.noQty {
+    color: red;
+}
+
+.qty {
+    font-weight: bold;
+}
+
+.Confirmed {
+    color: green;
+    font-weight: bold;
+}
+
+.Received {
+    color: red;
+    font-weight: bold;
+}
+
+.Received_WIP {
+    color: blue;
+    font-weight: bold;
+}
+
+.orderDetailsStyle {
+    width: 700px;
+    background-color: lightgoldenrodyellow;
+}
+
+.modal-body {
+    background-color: lightyellow;
+}
+
+.receiveBtn {
+    text-align: right;
+}
