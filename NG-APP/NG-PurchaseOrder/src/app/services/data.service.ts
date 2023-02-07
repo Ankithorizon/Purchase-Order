@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpEvent, HttpRequest } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { LocalDataService } from '../services/local-data.service';
-import ResumeUpload from '../models/partEditDTO';
 import PartEditDTO from '../models/partEditDTO';
 import PartCreateDTO from '../models/partCreateDTO';
 @Injectable({
@@ -119,4 +118,12 @@ export class DataService {
   searchReceivedOrders(searchString): Observable<Array<any>> {
     return this.http.get<Array<any>>(this.ReceivingApi + '/getReceivedOrders?searchString='+searchString);
   }
+  getOrderQuantity(refCode: string): Observable<any> {
+    return this.http.get<any>(this.ReceivingApi + '/getOrderQuantity?refCode=' + refCode);
+  }
+  // receive order
+  receiveOrder(data): Observable<any> {
+    return this.http.post(this.ReceivingApi + '/orderReceive' , data);
+  }
+
 }

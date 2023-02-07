@@ -32,3 +32,14 @@
     padding: 20px;
     text-align: center;
 }
+
+.orderQtyStyle {
+    color : blue;
+    font-size: large;
+    font-weight: bold;
+}
+.invalidOrderQtyStyle{
+    color : red;
+    font-size: large;
+    font-weight: bold;
+}

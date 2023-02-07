@@ -16,6 +16,7 @@ export class EngineeringComponent implements OnInit {
 
   closeResult: string = '';
   part;
+  errorResponse;
 
 
   term: string;
@@ -82,6 +83,7 @@ export class EngineeringComponent implements OnInit {
   // view part detail
   // Modal
   open(content, selectedPart) {
+    this.errorResponse = '';
     this.dataService.getPartDetails(Number(selectedPart.partMasterId))
       .subscribe(
         data => {          
@@ -96,9 +98,10 @@ export class EngineeringComponent implements OnInit {
           });
         },
         error => {
-          // console.log(error);             
-          if (error.status == 400) {
+          console.log(error);             
+          if (error.status === 400 || error.status===500) {
             this.part = null;
+            this.errorResponse = error.error;
           }
           this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
             this.closeResult = `Closed with: ${result}`;

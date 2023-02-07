@@ -40,9 +40,18 @@
                             <div class="form-group">
                                 <label>REF-CODE</label>
                                 <input type="text" 
+                                    (blur)="getOrderQuantity()" 
                                     formControlName="refCode" 
                                     class="form-control"
-                                    [ngClass]="{ 'is-invalid': submitted && f['refCode'].errors }" />
+                                    [ngClass]="{ 'is-invalid': submitted && f['refCode'].errors }" />                                
+                                <div *ngIf="orderQty>0" class="orderQtyStyle">
+                                    Order QTY # {{orderQty}}
+                                </div>
+                                <div *ngIf="orderQty==0" class="invalidOrderQtyStyle">
+                                    {{orderQtyMessage}}
+                                </div>
+                              
+
                                 <div *ngIf="submitted && f['refCode'].errors" 
                                     class="invalid-feedback">
                                     <div *ngIf="f['refCode'].errors['required']">

@@ -76,7 +76,7 @@
                     
                 </div>
                 <div *ngIf="!part" class="modal-body badRequest">
-                    Bad Request!                
+                    {{errorResponse}}               
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Ok</button>

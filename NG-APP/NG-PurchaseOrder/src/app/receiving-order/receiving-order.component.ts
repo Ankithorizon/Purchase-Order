@@ -14,6 +14,9 @@ import { HttpEventType, HttpResponse } from '@angular/common/http';
 })
 export class ReceivingOrderComponent implements OnInit {
 
+  orderQty;
+  orderQtyMessage = '';
+
   // form
   orderReceiveForm: FormGroup;
   submitted = false;
@@ -44,6 +47,9 @@ export class ReceivingOrderComponent implements OnInit {
     this.orderReceiveForm.reset();
     this.submitted = false;
 
+    this.orderQty = 0;
+    this.orderQtyMessage = '';
+
     // disable browser back button
     history.pushState(null, '');
   }  
@@ -56,6 +62,20 @@ export class ReceivingOrderComponent implements OnInit {
     return this.orderReceiveForm.controls;
   }
 
+  getOrderQuantity() {
+    var refCode = this.orderReceiveForm.value["refCode"];
+    this.dataService.getOrderQuantity(refCode)
+      .subscribe(
+        data => {          
+          console.log(data);    
+          this.orderQty = data.qty;
+          this.orderQtyMessage = data.status;     
+        },
+        error => {
+          console.log(error);     
+        });
+   }
+  
   onSubmit(): void {  
     this.apiError = false;
     this.apiMessage = '';
@@ -63,11 +83,49 @@ export class ReceivingOrderComponent implements OnInit {
 
     this.submitted = true;
     if (this.orderReceiveForm.valid) {
-      var orderReceive = {
+      var receivePartView = {
         refCode: this.orderReceiveForm.value["refCode"],
         receiveQuantity: Number(this.orderReceiveForm.value["receiveQuantity"])
       };
-      console.log(orderReceive);
+      console.log(receivePartView);
+
+      
+      this.dataService.receiveOrder(receivePartView)
+        .subscribe(
+          response => {
+            console.log(response);   
+            if (response.responseCode === 0) {
+              this.apiMessage = response.responseMessage;              
+              setTimeout(() => {
+                this.apiMessage = '';
+                this.reset();
+              }, 3000);
+            }
+            else if (response.responseCode === -1) {
+              this.apiError = true;
+              this.apiMessage = response.responseMessage;
+            }
+          },
+          err => {         
+            console.log(err);     
+            this.apiError = true;
+         
+            if (err.status === 400) {
+              if (err.error) {
+                this.modelErrors = this.localDataService.display400andEx(err.error, 'Receiving-Order');
+              }
+              else {
+                this.apiMessage = '400 : Error !';  
+              }            
+            }
+            else if(err.status===500) {
+              this.apiMessage = err.error;
+            }
+            else {
+              this.apiMessage = 'Error!';
+            }
+          }
+      );
     }
     else {
       console.log('form in-valid!');

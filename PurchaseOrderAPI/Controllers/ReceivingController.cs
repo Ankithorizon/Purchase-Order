@@ -86,5 +86,86 @@ namespace PurchaseOrderAPI.Controllers
             }
         }
 
+        [AcceptVerbs("GET", "POST")]
+        [Route("getOrderQuantity")]
+        public IActionResult GetOrderQuantity(string refCode)
+        {
+            var order_ = _unitOfWork.OrderMasters.Find(x => x.RefCode == refCode);
+            if (order_ != null && order_.Count() == 1)
+            {
+                return Ok(new 
+                {
+                    qty = order_.FirstOrDefault().OrderQuantity,
+                    status = "Success!"
+                });
+            }
+            else
+            {
+                return Ok(new
+                {
+                    qty = 0,
+                    status = "Invalid Input!"
+                });
+            }
+        }
+
+        [HttpPost]
+        [Route("orderReceive")]
+        public IActionResult OrderReceive(ReceivePartView receivePart)
+        {
+            try
+            {
+                // throw new Exception();
+
+                if (ModelState.IsValid)
+                {
+                    // prepare object from _unitOfWork
+                    // send it to repository to call SP with transaction
+
+
+                    // prepare object from _unitOfWork
+                    var _orderMaster = _unitOfWork.OrderMasters.Find(x => x.RefCode == receivePart.RefCode && (x.OrderStatus == 0 || x.OrderStatus == 3));
+                    if (_orderMaster != null && _orderMaster.Count() == 1)
+                    {
+                        ReceivePartAddVM _receivePart = new ReceivePartAddVM()
+                        {
+                            OrderMasterId = _orderMaster.FirstOrDefault().OrderMasterId,
+                            PartMasterId = _orderMaster.FirstOrDefault().PartMasterId,
+                            ReceiveDate = DateTime.Now,
+                            ReceiveQuantity = receivePart.ReceiveQuantity,
+                            RefCode = receivePart.RefCode
+                        };
+                        // send it to repository to call SP with transaction
+                        // TR1 add @ReceivePart
+                        // TR2 change StatusCode to 1 -- Received @OrderMaster
+                        // TR3 change Quantity to Quantity+ReceiveQuantity @PartMaster
+                        var spResponse = _unitOfWork.ReceiveParts.SP_ReceivePart(_receivePart);
+                        return Ok(new APIResponse()
+                        {
+                            ResponseCode = 0,
+                            ResponseMessage = "Order Received Successfully!"
+                        });
+                    }
+                    else
+                    {
+                        return Ok(new APIResponse()
+                        {
+                            ResponseCode = -1,
+                            ResponseMessage = "FAIL : Order Already Received!"
+                        });
+                    }
+                }
+                else
+                {
+                    return BadRequest(ModelState);
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Server Error !");
+            }
+        }
+
+
     }
 }

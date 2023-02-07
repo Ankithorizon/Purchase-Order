@@ -57,27 +57,43 @@ namespace PurchaseOrderAPI.Controllers
         [Route("getPartDetails/{selectedPartId:int}")]
         public IActionResult GetPartDetails(int selectedPartId)
         {
-            var partMaster = _unitOfWork.PartMasters.GetById(selectedPartId);
-            var partDetail = _unitOfWork.PartDetails.Find(x => x.PartMasterId == selectedPartId);
+            try
+            {
+                // throw new Exception();
 
-            if (partMaster != null && partDetail != null && partDetail.Count() > 0)
-            {
-                PartMasterPartDetailsView partMasterpartDetails = new PartMasterPartDetailsView()
+                var partMaster = _unitOfWork.PartMasters.GetById(selectedPartId);
+                var partDetail = _unitOfWork.PartDetails.Find(x => x.PartMasterId == selectedPartId);
+
+                if (partMaster != null && partDetail != null && partDetail.Count() > 0)
                 {
-                    PartMasterId = partMaster.PartMasterId,
-                    PartCode = partMaster.PartCode,
-                    PartName = partMaster.PartName,
-                    Quantity = partMaster.Quantity,
-                    PartDesc = partDetail.FirstOrDefault().PartDesc,
-                    PartDetailId = partDetail.FirstOrDefault().PartDetailId,
-                    PartDrgFile = partDetail.FirstOrDefault().PartDrgFile
-                };
-                return Ok(partMasterpartDetails);
+                    PartMasterPartDetailsView partMasterpartDetails = new PartMasterPartDetailsView()
+                    {
+                        PartMasterId = partMaster.PartMasterId,
+                        PartCode = partMaster.PartCode,
+                        PartName = partMaster.PartName,
+                        Quantity = partMaster.Quantity,
+                        PartDesc = partDetail.FirstOrDefault().PartDesc,
+                        PartDetailId = partDetail.FirstOrDefault().PartDetailId,
+                        PartDrgFile = partDetail.FirstOrDefault().PartDrgFile
+                    };
+                    return Ok(partMasterpartDetails);
+                }
+                else
+                {
+                    if (partDetail == null || partDetail.Count() < 1)
+                    {
+                        return BadRequest("Part-Details Not Found!");
+                    }
+                    else
+                    {
+                        return BadRequest("Bad Request!");
+                    }
+                }
             }
-            else
+            catch(Exception ex)
             {
-                return BadRequest();
-            }
+                return StatusCode(500, "Server Error !");
+            }        
         }
 
 
